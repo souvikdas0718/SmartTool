@@ -119,6 +119,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "Team8SmartTool"
+    }
+  },
+  "defaultProject": "Team8SmartTool",
+  "cli": {
+    "analytics": "bbe772b9-c9dd-412a-bd93-6ec6104f3ec9"
+  }
 }
