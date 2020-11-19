@@ -70,29 +70,4 @@ export class MainService {
       throw err;
     }
   }
-
-  // TODO: remove later
-  async test(){
-    var data = {
-      uid: 3,       //TODO: Change once users are integrated
-      name: 'test'
-    }
-
-    let promise = new Promise((res, rej) => {
-
-      try{
-        db.collection('test').doc().set(data)
-          .then(() => {
-            console.log('Success creating elem');
-            res(1);
-          });
-      }catch(err){
-        console.log('Error creating elem', err);
-        res(0);
-      }
-    });
-
-    await promise;
-    console.log('WORKS');
-  }
 }
