@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
 import { MainService } from '../main.service';
+import { AlertModalComponent } from '../alert-modal/alert-modal.component'
 
 @Component({
   selector: 'app-signup',
@@ -9,13 +11,11 @@ import { MainService } from '../main.service';
 })
 export class SignupComponent implements OnInit {
 
-  error_msg: string;
-
   constructor(
-    private mainService: MainService) { }
+    private mainService: MainService,
+    private modalService: NgbModal) { }
 
   ngOnInit(): void {
-    this.error_msg = "";
   }
 
   /**
@@ -47,9 +47,7 @@ export class SignupComponent implements OnInit {
 
           this.mainService.createUser(user_name, email, password, avg_wage, num_employees)
           .catch((err) => {
-            console.log("CAUGHT");
-          // TODO: Alert modal here
-          this.error_msg = err;
+            this.alertModal(err.message);
           });
 
         } else {
@@ -66,4 +64,10 @@ export class SignupComponent implements OnInit {
       console.log("form not filled")
     }
   }
+
+  alertModal(msg) {
+    const active_modal = this.modalService.open(AlertModalComponent);
+    active_modal.componentInstance.setMsg(msg);
+  }
+
 }

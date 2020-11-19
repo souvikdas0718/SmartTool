@@ -40,19 +40,15 @@ export class MainService {
           //TODO: create user record in firestore
 
         }).catch((err) => {
-          //console.log('Error creating user0', err);
-          //throw "TEST"
           rej(err);
         });
       }).catch((err) => {
-        console.log('Error creating user1', err);
         throw err;
       });
 
       await promise;
 
     } catch(err) {
-      console.log('Error creating user2', err);
       throw err;
     }
     return(true)
