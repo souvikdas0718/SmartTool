@@ -27,7 +27,13 @@ export class LoginComponent implements OnInit {
 
     // Ensuring forms are filled
     if(email != '' && password != '') {
-
+      this.mainService.login(email, password).then((uid) => {
+        // TODO: route to main page
+        this.alertModal("Success: " + uid);
+      }).catch((err) => {
+        this.alertModal(err.message);
+      });
+      
     } else {
       this.alertModal("Ensure all fields are filled out.");
     }

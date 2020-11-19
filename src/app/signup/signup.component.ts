@@ -43,17 +43,15 @@ export class SignupComponent implements OnInit {
       if(email == conf_email) { 
         if(password == conf_password) {
 
-          console.log("form good")
-
-          this.mainService.createUser(user_name, email, password, avg_wage, num_employees).then((uid) => {
+          this.mainService.createUser(user_name, email, password, avg_wage, num_employees).then((uid) => {         
             // TODO: route to main page
             this.alertModal("Success: " + uid);
+    
           }).catch((err) => {
             this.alertModal(err.message);
           });
 
         } else { this.alertModal("Ensure passwords match."); }
-
       } else { this.alertModal("Ensure email addresses match."); }
     } else { this.alertModal("Ensure all fields are filled out."); }
   }

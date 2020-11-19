@@ -54,20 +54,47 @@ export class MainService {
           db.collection('Users').doc(new_user.uid).set(Object.assign({}, new_user)).then((user) => {
             console.log('Success creating new user');
             res(new_user.getUID());
-          });
-
-        }).catch((err) => {
-          rej(err);
-        });
-      }).catch((err) => {
-        throw err;
-      });
+          
+          }).catch((err) => { rej(err); });
+        }).catch((err) => { rej(err); });
+      }).catch((err) => { throw err; });
 
       let result = await promise;
       return(result + ""); 
 
-    } catch(err) {
-      throw err;
-    }
+    } catch(err) { throw err; }
+  }
+
+  /**
+   * Logs user into application
+   * @param email     Email address for login creds
+   * @param password  Password for login creds
+   * @returns         Firestore user record
+   */
+  async login(email: string, password: string): Promise<string> {
+    try {
+      let promise = new Promise((res, rej) => {
+
+        // Check for user-auth record
+        var req_user = new User();
+        firebase.auth().signInWithEmailAndPassword(email, password).then((user_auth) => {
+
+          // Retrieve firestore user record
+          db.collection('Users').doc(user_auth.user.uid).get().then((user) => {
+            if(user.exists){
+              var data = user.data();
+              req_user.setData(data.uid, data.user_name, data.email, data.avg_wage, data.num_employees);
+              console.log(req_user)
+              res(req_user)
+
+            } else { rej("Firestore user record not found"); }
+          }).catch((err) => { rej(err); });
+        }).catch((err) => { rej(err); });
+      }).catch((err) => { throw err; });
+
+      let result = await promise;
+      return(result + "");
+
+    } catch(err) { throw err; }
   }
 }
