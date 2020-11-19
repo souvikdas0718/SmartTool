@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
+import { MainService } from '../main.service';
+
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
@@ -7,7 +9,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SignupComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private mainService: MainService) { }
 
   ngOnInit(): void {
   }
@@ -34,19 +37,19 @@ export class SignupComponent implements OnInit {
 
     // Ensure form is complete & emails, passwords are confirmed       
     if(email != '' && conf_email != '' && password != '' && conf_password != '' && avg_wage > 0  && num_employees > 0) {
-    if(email == conf_email) {
-      if(password == conf_password) {
+      if(email == conf_email) { 
+        if(password == conf_password) {
 
           console.log("form good")
-          
+          this.mainService.createUser(user_name, email, password, avg_wage, num_employees);
+
+        } else {
+          // TODO: ERROR password dont match
+          console.log("pass dont match")
+        }
 
       } else {
-        // TODO: ERROR password dont match
-          console.log("pass dont match")
-      }
-
-    } else {
-      // TODO: ERROR email dont match
+        // TODO: ERROR email dont match
         console.log("email dont match")
       }
     } else {

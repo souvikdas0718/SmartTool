@@ -25,6 +25,31 @@ export class MainService {
 
   constructor() { }
 
+  async createUser(user_name: string,
+                    email: string,
+                    password: string,
+                    avg_wage: number,
+                    num_employees: number){
+
+    let promise = new Promise((res, rej) => {
+      try{
+
+        // Create user auth account with firebase
+        firebase.auth().createUserWithEmailAndPassword(email, password).then((user) => {
+        
+          //TODO: create user record in firestore
+
+        });
+      }catch(err){
+        console.log('Error creating user', err);
+          res(0);
+      }
+    });
+
+    await promise;
+  }
+
+  // TODO: remove later
   async test(){
     var data = {
       uid: 3,       //TODO: Change once users are integrated
