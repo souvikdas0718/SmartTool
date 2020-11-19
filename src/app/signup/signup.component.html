@@ -5,27 +5,38 @@
   <div id="form-content">
     <form>
       <div class="form-group">
-        <input type="username" class="form-control" placeholder="Company Name">
+        <input #user_name type="username" class="form-control" placeholder="Company Name">
       </div>
       <div class="form-group">
-        <input type="number" class="form-control" placeholder="Number of Employees">
+        <input #num_employees type="number" class="form-control" placeholder="Number of Employees">
       </div>
       <div class="form-group">
-        <input type="number" class="form-control" placeholder="Average Employee Monthly Wage">
+        <input #avg_wage type="number" class="form-control" placeholder="Average Employee Monthly Wage">
       </div>
       <div class="form-group">
-        <input type="email" class="form-control" placeholder="Email address">
+        <input #email type="email" class="form-control" placeholder="Email address">
       </div>
       <div class="form-group">
-        <input type="email" class="form-control" placeholder="Confirm Email address">
+        <input #conf_email type="email" class="form-control" placeholder="Confirm Email address">
       </div>
       <div class="form-group">
-        <input type="password" class="form-control" placeholder="Password">
+        <input #password type="password" class="form-control" placeholder="Password">
       </div>
       <div class="form-group">
-        <input type="password" class="form-control" placeholder="Confirm Password">
+        <input #conf_password type="password" class="form-control" placeholder="Confirm Password">
       </div>
-      <button type="submit" class="btn btn-primary">Sign Up</button>
+      <button type="submit" 
+              class="btn btn-primary"
+              (click)="signUp(user_name.value, email.value,
+                                conf_email.value, password.value,
+                                conf_password.value, avg_wage.value, num_employees.value);
+                        user_name.value = '';
+                        email.value = '';
+                        conf_email.value = '';
+                        password.value = '';
+                        conf_password.value = '';
+                        avg_wage.value = '';
+                        num_employees.value = '';">Sign Up</button>
     </form>
     <hr class="separator">
     <a routerLink="/login" id="detail-btn" class="btn btn-primary">GOTO Login</a>
