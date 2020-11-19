@@ -26,18 +26,35 @@ export class MainService {
 
   constructor() { }
 
+  /**
+   * 
+   * Creates firebase user-auth record, and firebase user record
+   * @param user_name     Name of company user
+   * @param email         Email address for login creds
+   * @param password      Password for login creds
+   * @param avg_wage      Average of monthly wage costs per employee in company
+   * @param num_employees Number of employees working for company
+   * @returns user's uid
+   * 
+   */
   async createUser(user_name: string,
                     email: string,
                     password: string,
                     avg_wage: number,
-                    num_employees: number): Promise<boolean>{
+                    num_employees: number): Promise<string>{
 
     try {
       let promise = new Promise((res, rej) => {
         // Create user auth account with firebase
         firebase.auth().createUserWithEmailAndPassword(email, password).then((user) => {
         
-          //TODO: create user record in firestore
+          // Create user record in firestore
+          var new_user = new User();
+          new_user.setData(user.user.uid, user_name, email, avg_wage, num_employees);
+          db.collection('Users').doc(new_user.uid).set(Object.assign({}, new_user)).then((user) => {
+            console.log('Success creating new user');
+            res(new_user.getUID());
+          });
 
         }).catch((err) => {
           rej(err);
@@ -46,12 +63,12 @@ export class MainService {
         throw err;
       });
 
-      await promise;
+      let result = await promise;
+      return(result + ""); 
 
     } catch(err) {
       throw err;
     }
-    return(true)
   }
 
   // TODO: remove later

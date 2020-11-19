@@ -1,12 +1,12 @@
 export class User {
-    uid: number;
+    uid: string;
     user_name: string;
     email: string;
     avg_wage: number;
     num_employees: number;
 
     constructor() {
-        this.uid = -1;
+        this.uid = "";
         this.user_name = "";
         this.email = "";
         this.avg_wage = 0;
@@ -14,7 +14,7 @@ export class User {
     }
 
     // Adds data to empty User object
-    setData(uid: number, user_name: string, email: string, avg_wage: number, num_employees: number) {
+    setData(uid: string, user_name: string, email: string, avg_wage: number, num_employees: number) {
         this.uid = uid;
         this.user_name = user_name;
         this.email = email;
@@ -22,8 +22,8 @@ export class User {
         this.num_employees = num_employees;
     }
 
-    setUID(uid: number){ this.uid = uid; }
-    getUID(): number { return this.uid; }
+    setUID(uid: string){ this.uid = uid; }
+    getUID(): string { return this.uid; }
 
     setUsername(user_name: string) { this.user_name = user_name; }
     getUsername(): string { return this.user_name; }
