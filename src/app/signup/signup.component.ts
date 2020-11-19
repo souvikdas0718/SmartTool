@@ -9,10 +9,13 @@ import { MainService } from '../main.service';
 })
 export class SignupComponent implements OnInit {
 
+  error_msg: string;
+
   constructor(
     private mainService: MainService) { }
 
   ngOnInit(): void {
+    this.error_msg = "";
   }
 
   /**
@@ -34,14 +37,20 @@ export class SignupComponent implements OnInit {
           conf_password: string,
           avg_wage: number,
           num_employees: number): void {
-
+    
     // Ensure form is complete & emails, passwords are confirmed       
     if(email != '' && conf_email != '' && password != '' && conf_password != '' && avg_wage > 0  && num_employees > 0) {
       if(email == conf_email) { 
         if(password == conf_password) {
 
           console.log("form good")
-          this.mainService.createUser(user_name, email, password, avg_wage, num_employees);
+
+          this.mainService.createUser(user_name, email, password, avg_wage, num_employees)
+          .catch((err) => {
+            console.log("CAUGHT");
+          // TODO: Alert modal here
+          this.error_msg = err;
+          });
 
         } else {
           // TODO: ERROR password dont match
