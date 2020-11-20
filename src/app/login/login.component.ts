@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {Router} from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 
 import { MainService } from '../main.service';
 import { AlertModalComponent } from '../alert-modal/alert-modal.component'
@@ -13,7 +15,9 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private mainService: MainService,
-    private modalService: NgbModal) { }
+    private modalService: NgbModal,
+    private router: Router,
+    private cookieService: CookieService) { }
 
   ngOnInit(): void {
   }
@@ -27,13 +31,14 @@ export class LoginComponent implements OnInit {
 
     // Ensuring forms are filled
     if(email != '' && password != '') {
-      this.mainService.login(email, password).then((uid) => {
-        // TODO: route to main page
-        this.alertModal("Success: " + uid);
+      this.mainService.login(email, password).then((user) => {
+        this.cookieService.set('current_user', user)
+        this.router.navigate(['/main']);
+
       }).catch((err) => {
         this.alertModal(err.message);
       });
-      
+
     } else {
       this.alertModal("Ensure all fields are filled out.");
     }

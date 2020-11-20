@@ -8,7 +8,7 @@ import { SignupComponent } from './signup/signup.component';
 
 // URL path definitions
 const routes: Routes = [
-  { path: '', redirectTo: '/login', pathMatch: 'full' },  // Index page
+  { path: '', redirectTo: '/main', pathMatch: 'full' },  // Index page
   { path: 'main', component: MainComponent },
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent }

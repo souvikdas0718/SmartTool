@@ -76,16 +76,12 @@ export class MainService {
       let promise = new Promise((res, rej) => {
 
         // Check for user-auth record
-        var req_user = new User();
         firebase.auth().signInWithEmailAndPassword(email, password).then((user_auth) => {
 
           // Retrieve firestore user record
           db.collection('Users').doc(user_auth.user.uid).get().then((user) => {
             if(user.exists){
-              var data = user.data();
-              req_user.setData(data.uid, data.user_name, data.email, data.avg_wage, data.num_employees);
-              console.log(req_user)
-              res(req_user)
+              res(user.data().uid);
 
             } else { rej("Firestore user record not found"); }
           }).catch((err) => { rej(err); });
