@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
     if(email != '' && password != '') {
       this.mainService.login(email, password).then((user) => {
         this.cookieService.set('current_user', user)
-        this.router.navigate(['/main']);
+        this.router.navigate(['/']);
 
       }).catch((err) => {
         this.alertModal(err.message);

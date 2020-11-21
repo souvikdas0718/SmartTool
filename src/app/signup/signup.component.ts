@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {Router} from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 
 import { MainService } from '../main.service';
 import { AlertModalComponent } from '../alert-modal/alert-modal.component'
@@ -13,7 +15,9 @@ export class SignupComponent implements OnInit {
 
   constructor(
     private mainService: MainService,
-    private modalService: NgbModal) { }
+    private modalService: NgbModal,
+    private router: Router,
+    private cookieService: CookieService) { }
 
   ngOnInit(): void {
   }
@@ -44,8 +48,8 @@ export class SignupComponent implements OnInit {
         if(password == conf_password) {
 
           this.mainService.createUser(user_name, email, password, avg_wage, num_employees).then((uid) => {         
-            // TODO: route to main page
-            this.alertModal("Success: " + uid);
+            this.cookieService.set('current_user', uid)
+            this.router.navigate(['/']);
     
           }).catch((err) => {
             this.alertModal(err.message);
