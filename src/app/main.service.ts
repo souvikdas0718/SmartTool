@@ -8,6 +8,8 @@ import { DatePipe, registerLocaleData } from '@angular/common';
 // Datatype definitions
 import { environment } from '../environments/environment'
 import { User } from './user'
+import {UserRevenue} from "./userRevenue";
+import {mark} from "@angular/compiler-cli/src/ngtsc/perf/src/clock";
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json'})
@@ -27,7 +29,7 @@ export class MainService {
   constructor() { }
 
   /**
-   * 
+   *
    * Creates firebase user-auth record, and firebase user record
    * @param user_name     Name of company user
    * @param email         Email address for login creds
@@ -35,7 +37,7 @@ export class MainService {
    * @param avg_wage      Average of monthly wage costs per employee in company
    * @param num_employees Number of employees working for company
    * @returns user's uid
-   * 
+   *
    */
   async createUser(user_name: string,
                     email: string,
@@ -47,20 +49,20 @@ export class MainService {
       let promise = new Promise((res, rej) => {
         // Create user auth account with firebase
         firebase.auth().createUserWithEmailAndPassword(email, password).then((user) => {
-        
+
           // Create user record in firestore
           var new_user = new User();
           new_user.setData(user.user.uid, user_name, email, avg_wage, num_employees);
           db.collection('Users').doc(new_user.uid).set(Object.assign({}, new_user)).then((user) => {
             console.log('Success creating new user');
             res(new_user.getUID());
-          
+
           }).catch((err) => { rej(err); });
         }).catch((err) => { rej(err); });
       }).catch((err) => { throw err; });
 
       let result = await promise;
-      return(result + ""); 
+      return(result + "");
 
     } catch(err) { throw err; }
   }
@@ -86,6 +88,36 @@ export class MainService {
             } else { rej("Firestore user record not found"); }
           }).catch((err) => { rej(err); });
         }).catch((err) => { rej(err); });
+      }).catch((err) => { throw err; });
+
+      let result = await promise;
+      return(result + "");
+
+    } catch(err) { throw err; }
+  }
+
+  async createRevenue(date: string,
+                      office_costs: number,
+                      wage_costs: number,
+                      marketing_costs: number,
+                      other_costs: number,
+                      operation_cost: number,
+                      revenue: number): Promise<string>{
+
+    try {
+      let promise = new Promise((req, res) => {
+        // check method for adding a collection in firebase
+        firebase.auth().createUserWithEmailAndPassword(date, date).then((userRevenue) => {
+
+          // Create user record in firestore
+          let user_revenue = new UserRevenue();
+          user_revenue.setData(userRevenue.user.uid, date, office_costs, wage_costs, marketing_costs, other_costs, operation_cost, revenue);
+          db.collection('UserRevenue').doc(userRevenue.user.uid).set(Object.assign({}, user_revenue)).then((user) => {
+            console.log('Success adding user revenue');
+            req(user_revenue.getUID());
+
+          }).catch((err) => { res(err); });
+        }).catch((err) => { res(err); });
       }).catch((err) => { throw err; });
 
       let result = await promise;

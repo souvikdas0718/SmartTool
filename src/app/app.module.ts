@@ -8,12 +8,14 @@ import { SignupComponent } from './signup/signup.component';
 import { AlertModalComponent } from './alert-modal/alert-modal.component';
 import { MainComponent } from './main/main.component';
 import { CookieService } from 'ngx-cookie-service';
+import { RevenueComponent } from './revenueForm/revenueForm.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     SignupComponent,
+    RevenueComponent,
     AlertModalComponent,
     MainComponent
   ],

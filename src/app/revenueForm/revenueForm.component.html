@@ -1,0 +1,42 @@
+<div>
+  <h1>Monthly Revenue Cost</h1>
+</div>
+<div id="form-pad">
+  <div id="form-content">
+    <form>
+      <div class="form-group">
+        <input #date type="date" class="form-control" placeholder="Enter Date">
+      </div>
+      <div class="form-group">
+        <input #revenue type="number" class="form-control" placeholder="Total Revenue">
+      </div>
+      <div class="form-group">
+        <input #operation_cost type="number" class="form-control" placeholder="Product Operation Costs">
+      </div>
+      <div class="form-group">
+        <input #office_costs type="number" class="form-control" placeholder="Office Related Costs">
+      </div>
+      <div class="form-group">
+        <input #wage_costs type="number" class="form-control" placeholder="Wage Costs">
+      </div>
+      <div class="form-group">
+        <input #marketing_costs type="number" class="form-control" placeholder="Marketing Costs">
+      </div>
+      <div class="form-group">
+        <input #other_costs type="number" class="form-control" placeholder="Other Costs">
+      </div>
+      <button type="button"
+              class="btn btn-primary"
+              (click)="revenueForm(date.value, office_costs.valueAsNumber,
+                                wage_costs.valueAsNumber, marketing_costs.valueAsNumber,
+                                other_costs.valueAsNumber, operation_cost.valueAsNumber, revenue.valueAsNumber);
+                        date.value = '';
+                        office_costs.value = '';
+                        wage_costs.value = '';
+                        marketing_costs.value = '';
+                        other_costs.value = '';
+                        operation_cost.value = '';
+                        revenue.value = '';">Submit</button>
+    </form>
+  </div>
+</div>
