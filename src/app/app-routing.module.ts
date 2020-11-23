@@ -5,13 +5,15 @@ import { Routes, RouterModule } from '@angular/router';
 import { MainComponent } from './main/main.component'
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
+import { GraphAnalyticsComponent } from './graph-analytics/graph-analytics.component';
 
 // URL path definitions
 const routes: Routes = [
   { path: '', redirectTo: '/main', pathMatch: 'full' },  // Index page
   { path: 'main', component: MainComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'signup', component: SignupComponent }
+  { path: 'signup', component: SignupComponent },
+  {path:'smartanalysis',component: GraphAnalyticsComponent}
 ];
 
 @NgModule({
