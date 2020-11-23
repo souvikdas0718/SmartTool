@@ -8,6 +8,7 @@ import { SignupComponent } from './signup/signup.component';
 import { AlertModalComponent } from './alert-modal/alert-modal.component';
 import { MainComponent } from './main/main.component';
 import { CookieService } from 'ngx-cookie-service';
+import { GraphAnalyticsComponent } from './graph-analytics/graph-analytics.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { CookieService } from 'ngx-cookie-service';
     LoginComponent,
     SignupComponent,
     AlertModalComponent,
-    MainComponent
+    MainComponent,
+    GraphAnalyticsComponent
   ],
   imports: [
     BrowserModule,
