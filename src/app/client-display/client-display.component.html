@@ -1,0 +1,19 @@
+<h3>Clients</h3>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Client Name</th>
+        <th scope="col">Contract Start Date</th>
+        <th scope="col">Contract End Date</th>
+        <th scope="col">Total Contract Revenue</th>
+      </tr>
+    </thead>
+    <tbody *ngFor="let client of clients">
+      <tr>
+        <td>{{ client.name }}</td>
+        <td>{{ client.start_date | date : "dd.MM.y" }}</td>
+        <td>{{ client.end_date | date : "dd.MM.y" }}</td>
+        <td>{{ client.revenue }}</td>
+      </tr>
+    </tbody>
+  </table>

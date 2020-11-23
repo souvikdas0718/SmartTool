@@ -10,7 +10,7 @@ import { MainComponent } from './main/main.component';
 import { CookieService } from 'ngx-cookie-service';
 import { GraphAnalyticsComponent } from './graph-analytics/graph-analytics.component';
 import { ClientFormComponent } from './client-form/client-form.component';
-import { ClientDataComponent } from './client-data/client-data.component';
+import { ClientDisplayComponent } from './client-display/client-display.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +21,7 @@ import { ClientDataComponent } from './client-data/client-data.component';
     MainComponent,
     GraphAnalyticsComponent,
     ClientFormComponent,
-    ClientDataComponent
+    ClientDisplayComponent
   ],
   imports: [
     BrowserModule,
