@@ -24,14 +24,27 @@ export class ClientDisplayComponent implements OnInit {
 
   }
 
-  
+  /**
+   * 
+   * @param uid id of the current user
+   */
   getClients(uid: string): void {
     this.mainService.getClients(uid).then((clients) => {
-      console.log('Succesws');
       this.clients = clients;
     }).catch((err) => {
       console.log(err);
     });
   }
 
+  /**
+   * 
+   * @param client_id client id to be removed
+   */
+  removeClient(client_id: string): void {
+    this.mainService.removeClient(client_id).then((clients) => {
+      
+    }).catch((err) => {
+      console.log(err);
+    });
+  }
 }

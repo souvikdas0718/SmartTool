@@ -135,7 +135,7 @@ export class MainService {
         var rev = [10, 1000, 10000, 20000, 30000]
         for (var i = 0; i < 5; i++) {
           var new_client = new Client();
-          new_client.setData('1', n[i], std[i], etd[i], rev[i]);
+          new_client.setData('' + i, n[i], std[i], etd[i], rev[i]);
           clients.push(new_client);
         }
         /////////////////////////////////
@@ -150,5 +150,24 @@ export class MainService {
 
     await promise;
     return clients;
+  }
+
+  /**
+   * 
+   * @param client_id client id to be removed
+   */
+  async removeClient(client_id: string) {
+    
+    let promise = new Promise((res, rej) => {
+      try {
+
+        // TODO: Send remove client request to backend
+        console.log(client_id);
+
+      } catch(err) {
+        console.log('Error removing client record', err);
+        rej();
+      }
+    });
   }
 }
