@@ -93,4 +93,18 @@ export class MainService {
 
     } catch(err) { throw err; }
   }
+
+  /**
+   * Adds client record under current user 
+   * @param client_name name of the client
+   * @param start_date  start date of the client's contract
+   * @param end_date    end date of the client's contract
+   * @param revenue     total revenue attributed with new client contract
+   */
+  async addClient(client_name: string,
+                    start_date: string,
+                    end_date:string,
+                    revenue: number){
+      //TODO: Contact backend and retrieve response
+    }
 }
