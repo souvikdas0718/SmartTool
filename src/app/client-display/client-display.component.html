@@ -10,7 +10,7 @@
     </thead>
     <tbody *ngFor="let client of clients">
       <tr>
-        <td>{{ client.name }}</td>
+        <td>{{ client.client_name }}</td>
         <td>{{ client.start_date | date : "dd.MM.y" }}</td>
         <td>{{ client.end_date | date : "dd.MM.y" }}</td>
         <td>{{ client.revenue }}</td>

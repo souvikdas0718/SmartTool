@@ -6,8 +6,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { DatePipe, registerLocaleData } from '@angular/common';
 
 // Datatype definitions
-import { environment } from '../environments/environment'
-import { User } from './user'
+import { environment } from '../environments/environment';
+import { User } from './user';
+import { Client } from './client';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json'})
@@ -105,6 +106,49 @@ export class MainService {
                     start_date: string,
                     end_date:string,
                     revenue: number){
-      //TODO: Contact backend and retrieve response
-    }
+    //TODO: Contact backend and retrieve response
+  }
+
+  /**
+   * @param user_id ID of the current user of application
+   * @returns       All client records for given user
+   */
+  async getClients(user_id: string): Promise<Client[]> {
+
+    var clients = [];
+    let promise = new Promise((res, rej) => {
+      try {
+
+        // Placeholder data retreival
+        // TODO: remove once backend available
+        var n = ['amd', 'rty', 'cisco', 'ewra', 'tre']
+        var std = [new Date('2020-01-01'),
+                new Date('2020-01-01'),
+                new Date('2020-01-01'),
+                new Date('2020-01-01'),
+                new Date('2020-01-01')]
+        var etd = [new Date('2020-01-12'),
+                new Date('2020-01-12'),
+                new Date('2020-01-12'),
+                new Date('2020-01-12'),
+                new Date('2020-01-12')];
+        var rev = [10, 1000, 10000, 20000, 30000]
+        for (var i = 0; i < 5; i++) {
+          var new_client = new Client();
+          new_client.setData('1', n[i], std[i], etd[i], rev[i]);
+          clients.push(new_client);
+        }
+        /////////////////////////////////
+        // TODO: Retrieve client data from backend
+        res(clients)
+
+      } catch(err) {
+        console.log('Error getting client data', err)
+        rej(clients)
+      }
+    });
+
+    await promise;
+    return clients;
+  }
 }
