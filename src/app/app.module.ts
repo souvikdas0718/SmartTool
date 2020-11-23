@@ -9,6 +9,7 @@ import { AlertModalComponent } from './alert-modal/alert-modal.component';
 import { MainComponent } from './main/main.component';
 import { CookieService } from 'ngx-cookie-service';
 import { GraphAnalyticsComponent } from './graph-analytics/graph-analytics.component';
+import { ClientFormComponent } from './client-form/client-form.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { GraphAnalyticsComponent } from './graph-analytics/graph-analytics.compo
     SignupComponent,
     AlertModalComponent,
     MainComponent,
-    GraphAnalyticsComponent
+    GraphAnalyticsComponent,
+    ClientFormComponent
   ],
   imports: [
     BrowserModule,
