@@ -36,8 +36,7 @@ export class ClientFormComponent implements OnInit {
       if(client_name != '' && start_date != null && end_date != null && revenue > 0){
         this.mainService.addClient(client_name, start_date, end_date, revenue).then(() => {
 
-          //TODO: add success navigation here
-          this.alertModal('Success');
+          this.modalService.dismissAll();
 
         }).catch((err) => {
           this.alertModal(err.message);

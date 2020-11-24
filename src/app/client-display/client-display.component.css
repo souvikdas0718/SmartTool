@@ -1,0 +1,12 @@
+#table-header{
+    margin-top: 10px;
+}
+
+#table-title{
+    margin: 0px;
+    display: inline-block;
+}
+
+.btn-outline-success{
+    float: right;
+}

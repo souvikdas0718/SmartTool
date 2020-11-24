@@ -4,6 +4,7 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 import { Client } from '../client';
 import { MainService } from '../main.service';
+import { ClientFormComponent } from '../client-form/client-form.component';
 import {AlertModalComponent} from '../alert-modal/alert-modal.component';
 
 @Component({
@@ -81,6 +82,10 @@ export class ClientDisplayComponent implements OnInit {
   openEditModal(client: Client, content) {
     this.edit_client = client;
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'});
+  }
+
+  openNewClientModal() {
+    const active_modal = this.modalService.open(ClientFormComponent);
   }
 
   alertModal(msg) {
