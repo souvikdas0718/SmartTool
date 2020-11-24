@@ -17,7 +17,7 @@ const routes: Routes = [
   { path: 'signup', component: SignupComponent },
   {path:'smartanalysis',component: GraphAnalyticsComponent},
   {path: 'clientform', component: ClientFormComponent},
-  {path: 'clientdisplay', component: ClientDisplayComponent}
+  {path: 'clients', component: ClientDisplayComponent}
 ];
 
 @NgModule({
