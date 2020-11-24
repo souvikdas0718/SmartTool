@@ -23,6 +23,7 @@
     "@ng-bootstrap/ng-bootstrap": "^8.0.0",
     "bootstrap": "^4.5.3",
     "chart.js": "^2.9.4",
+    "cors": "^2.8.5",
     "firebase": "^8.0.2",
     "ng2-charts": "^2.4.2",
     "ngx-cookie-service": "^10.1.1",
