@@ -45,15 +45,19 @@
   <div class="modal-body">
     <form>
       <div class="form-group">
+        <label>Client Name</label>
         <input #client_name type="text" class="form-control" placeholder="{{ edit_client.client_name }}">
       </div>
       <div class="form-group">
-        <input #start_date type="date" class="form-control" placeholder="{{ edit_client.start_date }}">
+        <label>Contract Start Date</label>
+        <input #start_date type="date" class="form-control" [value]="edit_client.start_date | date : 'yyyy-MM-dd'">
       </div>
       <div class="form-group">
-          <input #end_date type="date" class="form-control" placeholder="{{ edit_client.end_date }}">
+        <label>Contract End Date</label>
+          <input #end_date type="date" class="form-control" [value]="edit_client.end_date | date : 'yyyy-MM-dd'">
       </div>
       <div class="form-group">
+        <label>Total Contract Revenue</label>
         <input #revenue type="number" class="form-control" placeholder="{{ edit_client.revenue }}">
       </div>
     </form>
