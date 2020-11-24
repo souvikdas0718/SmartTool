@@ -103,8 +103,8 @@ export class MainService {
    * @param revenue     total revenue attributed with new client contract
    */
   async addClient(client_name: string,
-                    start_date: string,
-                    end_date:string,
+                    start_date: Date,
+                    end_date: Date,
                     revenue: number){
     //TODO: Contact backend and retrieve response
   }
@@ -150,6 +150,25 @@ export class MainService {
 
     await promise;
     return clients;
+  }
+
+  /**
+   * 
+   * @param client Client object to be updated
+   */
+  async editClient(client: Client) {
+    
+    let promise = new Promise((res, rej) => {
+      try {
+        
+        // TODO: Send edit client request to backend
+        console.log(client.client_id);
+
+      } catch(err) {
+        console.log('Error editing client record', err);
+        rej();
+      }
+    });
   }
 
   /**

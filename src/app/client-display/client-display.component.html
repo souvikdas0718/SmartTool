@@ -18,7 +18,8 @@
         <td>{{ client.revenue }}</td>
         <!--Edit button bootstrap icon-->
         <td><button type="button"
-          class="btn btn-outline-primary"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          class="btn btn-outline-primary"
+          (click)="openEditModal(client, editModal)"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
           <path fill-rule="evenodd" d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
         </svg></button></td>
         <!--Delete button bootstrap icon-->
@@ -31,3 +32,41 @@
       </tr>
     </tbody>
   </table>
+
+<!-- MODAL CONTENT -->
+<!-- Action Modal -->
+<ng-template #editModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Edit Client Details</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="form-group">
+        <input #client_name type="text" class="form-control" placeholder="{{ edit_client.client_name }}">
+      </div>
+      <div class="form-group">
+        <input #start_date type="date" class="form-control" placeholder="{{ edit_client.start_date }}">
+      </div>
+      <div class="form-group">
+          <input #end_date type="date" class="form-control" placeholder="{{ edit_client.end_date }}">
+      </div>
+      <div class="form-group">
+        <input #revenue type="number" class="form-control" placeholder="{{ edit_client.revenue }}">
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button"
+            class="btn btn-outline-success"
+            (click)="editClient(client_name.value, start_date.value, end_date.value, revenue.value);
+                     client_name.value='';
+                     start_date.value='';
+                     end_date.value='';
+                     revenue.value='';
+                     modal.close('Save click');">Submit
+    </button>
+  </div>
+</ng-template>

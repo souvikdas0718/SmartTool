@@ -3,7 +3,7 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {Router} from '@angular/router';
 
 import {MainService} from '../main.service';
-import {AlertModalComponent} from '../alert-modal/alert-modal.component'
+import {AlertModalComponent} from '../alert-modal/alert-modal.component';
 
 @Component({
   selector: 'app-client-form',
@@ -29,11 +29,11 @@ export class ClientFormComponent implements OnInit {
    */
   addClient(
     client_name: string,
-    start_date: string,
-    end_date:string,
+    start_date: Date,
+    end_date: Date,
     revenue: number): void {
 
-      if(client_name != '' && start_date != '' && end_date != '' && revenue > 0){
+      if(client_name != '' && start_date != null && end_date != null && revenue > 0){
         this.mainService.addClient(client_name, start_date, end_date, revenue).then(() => {
 
           //TODO: add success navigation here
