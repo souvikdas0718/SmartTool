@@ -1,0 +1,30 @@
+.header-name {
+    font-size: 22px;
+    font-weight: 700;
+    margin-left: 10px;
+}
+
+.navbar-logo{
+    width: 60px;
+    height:40px;
+}
+
+.toggle-img{
+    width: 30px;
+    height: 30px;
+}
+
+
+.nav-link-menu:hover{
+    border-radius: 25px;
+    font-weight: 700;
+    padding: 8px 15px;
+    white-space: nowrap;
+    background-color: rgba(211, 129, 7, 0.219);
+}
+
+
+.nav-item{
+    margin-left: 20px;
+    display:flex;
+}
