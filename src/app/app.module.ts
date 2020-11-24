@@ -10,6 +10,8 @@ import { MainComponent } from './main/main.component';
 import { CookieService } from 'ngx-cookie-service';
 import { GraphAnalyticsComponent } from './graph-analytics/graph-analytics.component';
 import { HeaderComponent } from './header/header.component';
+import { ClientFormComponent } from './client-form/client-form.component';
+import { ClientDisplayComponent } from './client-display/client-display.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +21,9 @@ import { HeaderComponent } from './header/header.component';
     AlertModalComponent,
     MainComponent,
     GraphAnalyticsComponent,
-    HeaderComponent
+    HeaderComponent,
+    ClientFormComponent,
+    ClientDisplayComponent
   ],
   imports: [
     BrowserModule,
