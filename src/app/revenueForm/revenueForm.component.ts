@@ -37,7 +37,6 @@ export class RevenueComponent implements OnInit {
     // Ensure form is complete & emails, passwords are confirmed
     if (date != '' && office_costs > 0 && wage_costs > 0 && marketing_costs > 0 && other_costs > 0 && operation_costs > 0 && revenue > 0) {
 
-      let revenue = new UserRevenue();
       this.mainService.createRevenue(date, office_costs, wage_costs, marketing_costs, other_costs, operation_costs, revenue).then(() => {
         this.modalService.dismissAll();        
 

@@ -193,7 +193,12 @@ export class MainService {
 
     await promise;
   }
-  async getRevenue(revenue_id: string): Promise<UserRevenue[]> {
+
+  /**
+   * 
+   * @param uid user id of current user 
+   */
+  async getRevenue(uid: string): Promise<UserRevenue[]> {
     
     var revenue_records = [];
     let promise = new Promise((res, rej) => {
@@ -235,6 +240,16 @@ export class MainService {
     return revenue_records;
   }
 
+  /**
+   * creates new revenue report
+   * @param date 
+   * @param office_costs 
+   * @param wage_costs 
+   * @param marketing_costs 
+   * @param other_costs 
+   * @param operation_costs 
+   * @param revenue 
+   */
   async createRevenue(date, office_costs, wage_costs, marketing_costs, other_costs, operation_costs, revenue){
     let promise = new Promise((res, rej) => {
       try {
@@ -250,6 +265,10 @@ export class MainService {
     await promise;
   }
 
+  /**
+   * updates revenue report
+   * @param revenue updated revenue record
+   */
   async editRevenue(revenue: UserRevenue){
     let promise = new Promise((res, rej) => {
       try {
@@ -265,12 +284,16 @@ export class MainService {
     await promise;
   }
 
+  /**
+   * 
+   * @param revenue_id id of revenue record to delete
+   */
   async removeRevenue(revenue_id: string){
     let promise = new Promise((res, rej) => {
       try {
 
         //TODO: contact backend to remove record
-
+        
       } catch(err) {
         console.log('Error adding revenue record', err);
         rej();
