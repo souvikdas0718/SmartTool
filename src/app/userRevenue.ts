@@ -2,7 +2,7 @@ import {of} from "rxjs";
 
 export class UserRevenue {
   uid: string;
-  date: string;
+  date: Date;
   office_costs: number;
   wage_costs: number;
   marketing_costs: number;
@@ -12,7 +12,7 @@ export class UserRevenue {
 
   constructor() {
     this.uid = "";
-    this.date = "";
+    this.date = new Date();
     this.office_costs = 0;
     this.wage_costs = 0;
     this.marketing_costs = 0;
@@ -22,7 +22,7 @@ export class UserRevenue {
   }
 
   // Adds data to empty User object
-  setData(uid: string, date: string, office_costs: number, wage_costs: number, marketing_costs: number, other_costs: number, operation_cost: number, revenue: number) {
+  setData(uid: string, date: Date, office_costs: number, wage_costs: number, marketing_costs: number, other_costs: number, operation_cost: number, revenue: number) {
     this.uid = uid;
     this.date = date;
     this.office_costs = office_costs;
@@ -36,8 +36,8 @@ export class UserRevenue {
   setUID(uid: string){ this.uid = uid; }
   getUID(): string { return this.uid; }
 
-  setDate(date: string) { this.date = date; }
-  getDate(): string { return this.date; }
+  setDate(date: Date) { this.date = date; }
+  getDate(): Date { return this.date; }
 
   setOfficeCost(office_costs: number) { this.office_costs = office_costs; }
   getOfficeCost(): number { return this.office_costs; }

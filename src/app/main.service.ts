@@ -9,6 +9,8 @@ import { DatePipe, registerLocaleData } from '@angular/common';
 import { environment } from '../environments/environment';
 import { User } from './user';
 import { Client } from './client';
+import { UserRevenue } from './userRevenue';
+import { rejects } from 'assert';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json'})
@@ -188,5 +190,71 @@ export class MainService {
         rej();
       }
     });
+
+    await promise;
+  }
+  async getRevenue(revenue_id: string): Promise<UserRevenue[]> {
+    
+    var revenue_records = [];
+    let promise = new Promise((res, rej) => {
+      try {
+
+        //TODO: contact backend to get records
+
+      } catch(err) {
+        console.log('Error adding revenue record', err);
+        rej();
+      }
+    });
+
+    await promise;
+    return revenue_records;
+  }
+
+  async createRevenue(revenue: UserRevenue){
+    let promise = new Promise((res, rej) => {
+      try {
+
+        //TODO: contact backend to add record
+
+      } catch(err) {
+        console.log('Error adding revenue record', err);
+        rej();
+      }
+    });
+
+    await promise;
+  }
+
+  async editRevenue(revenue: UserRevenue){
+    let promise = new Promise((res, rej) => {
+      try {
+
+        //TODO: contact backend to edit record
+
+      } catch(err) {
+        console.log('Error adding revenue record', err);
+        rej();
+      }
+    });
+
+    await promise;
+  }
+
+  async removeRevenue(revenue_id: string){
+    let promise = new Promise((res, rej) => {
+      try {
+
+        //TODO: contact backend to remove record
+
+      } catch(err) {
+        console.log('Error adding revenue record', err);
+        rej();
+      }
+    });
+
+    await promise;
   }
 }
+
+
