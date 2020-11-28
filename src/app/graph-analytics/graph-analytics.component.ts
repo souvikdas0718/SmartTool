@@ -84,7 +84,7 @@ export class GraphAnalyticsComponent implements OnInit {
     this.horizontalBar = new Chart('horizontalBar', {
       type: 'horizontalBar',
       data: {
-        labels: ['Wishlist', 'Applied', 'Interview', 'Offer', 'Rejected'],
+        labels: ['Java', 'Angular', 'PowerBI', 'Salesforce', 'AWS'],
         datasets: [
           {
             data: [10, 20, 5, 10, 2],
@@ -138,28 +138,36 @@ export class GraphAnalyticsComponent implements OnInit {
     this.stackedBar = new Chart('stackedBar', {
       type: 'bar',
       data: {
-        labels: ['Jan',
-          'Feb',
-          'March',
-          'April',
-          'May',
-          'June', 
-          'July', 
-          'August'
+        labels: ['amd',
+          'rty',
+          'Cisco',
+          'ewra',
+          'tre',
+          'Facebook', 
+          'Telus', 
+          'ABB'
         ],
         datasets: [
           {
-            label: "Completed Activity",
+            label: " Sprint Deliveries completed",
             data: [10, 20, 5, 10, 2, 1, 12],
-            backgroundColor: '#0088ff',
+            backgroundColor: '#b2b2b2',
             hoverBorderColor: '#e6e6ff',
             hoverBorderWidth: 2,
           },
           {
-            label: "Pending Activity",
+            label: "Sprint Tasks in progress",
             data: [1, 20, 6, 10, 2, 6,0,10],
-            backgroundColor: '#f8e82c',
+            backgroundColor: '#f4e1d2',
             hoverBorderColor: '#e6e6ff',
+            hoverBorderWidth: 2,
+
+          },
+          {
+            label: "Sprint Backlog",
+            data: [1, 4, 6, 3, 2, 5,0, 1],
+            backgroundColor: '#bc5a45',
+            hoverBorderColor: '#80ced6',
             hoverBorderWidth: 2,
 
           }
