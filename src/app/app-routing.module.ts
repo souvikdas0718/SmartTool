@@ -6,6 +6,8 @@ import { MainComponent } from './main/main.component'
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 import { RevenueComponent } from './revenueForm/revenueForm.component';
+import { GraphAnalyticsComponent } from './graph-analytics/graph-analytics.component';
+import { ClientDisplayComponent } from './client-display/client-display.component';
 
 // URL path definitions
 const routes: Routes = [
@@ -13,7 +15,9 @@ const routes: Routes = [
   { path: 'main', component: MainComponent },
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
-  { path: 'revenueForm', component: RevenueComponent }
+  { path: 'revenueForm', component: RevenueComponent },
+  {path:'smartanalysis',component: GraphAnalyticsComponent},
+  {path: 'clients', component: ClientDisplayComponent}
 ];
 
 @NgModule({

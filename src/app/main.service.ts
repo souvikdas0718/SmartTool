@@ -6,10 +6,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { DatePipe, registerLocaleData } from '@angular/common';
 
 // Datatype definitions
-import { environment } from '../environments/environment'
-import { User } from './user'
-import {UserRevenue} from "./userRevenue";
-import {mark} from "@angular/compiler-cli/src/ngtsc/perf/src/clock";
+import { environment } from '../environments/environment';
+import { User } from './user';
+import { Client } from './client';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json'})
@@ -96,33 +95,98 @@ export class MainService {
     } catch(err) { throw err; }
   }
 
-  async createRevenue(date: string,
-                      office_costs: number,
-                      wage_costs: number,
-                      marketing_costs: number,
-                      other_costs: number,
-                      operation_cost: number,
-                      revenue: number): Promise<string>{
+  /**
+   * Adds client record under current user 
+   * @param client_name name of the client
+   * @param start_date  start date of the client's contract
+   * @param end_date    end date of the client's contract
+   * @param revenue     total revenue attributed with new client contract
+   */
+  async addClient(client_name: string,
+                    start_date: Date,
+                    end_date: Date,
+                    revenue: number){
+    //TODO: Contact backend and retrieve response
+  }
 
-    try {
-      let promise = new Promise((req, res) => {
-        // check method for adding a collection in firebase
-        firebase.auth().createUserWithEmailAndPassword(date, date).then((userRevenue) => {
+  /**
+   * @param user_id ID of the current user of application
+   * @returns       All client records for given user
+   */
+  async getClients(user_id: string): Promise<Client[]> {
 
-          // Create user record in firestore
-          let user_revenue = new UserRevenue();
-          user_revenue.setData(userRevenue.user.uid, date, office_costs, wage_costs, marketing_costs, other_costs, operation_cost, revenue);
-          db.collection('UserRevenue').doc(userRevenue.user.uid).set(Object.assign({}, user_revenue)).then((user) => {
-            console.log('Success adding user revenue');
-            req(user_revenue.getUID());
+    var clients = [];
+    let promise = new Promise((res, rej) => {
+      try {
 
-          }).catch((err) => { res(err); });
-        }).catch((err) => { res(err); });
-      }).catch((err) => { throw err; });
+        // Placeholder data retreival
+        // TODO: remove once backend available
+        var n = ['amd', 'rty', 'cisco', 'ewra', 'tre']
+        var std = [new Date('2020-01-01'),
+                new Date('2020-01-01'),
+                new Date('2020-01-01'),
+                new Date('2020-01-01'),
+                new Date('2020-01-01')]
+        var etd = [new Date('2020-01-12'),
+                new Date('2020-01-12'),
+                new Date('2020-01-12'),
+                new Date('2020-01-12'),
+                new Date('2020-01-12')];
+        var rev = [10, 1000, 10000, 20000, 30000]
+        for (var i = 0; i < 5; i++) {
+          var new_client = new Client();
+          new_client.setData('' + i, n[i], std[i], etd[i], rev[i]);
+          clients.push(new_client);
+        }
+        /////////////////////////////////
+        // TODO: Retrieve client data from backend
+        res(clients)
 
-      let result = await promise;
-      return(result + "");
+      } catch(err) {
+        console.log('Error getting client data', err)
+        rej(clients)
+      }
+    });
 
-    } catch(err) { throw err; }
+    await promise;
+    return clients;
+  }
+
+  /**
+   * 
+   * @param client Client object to be updated
+   */
+  async editClient(client: Client) {
+    
+    let promise = new Promise((res, rej) => {
+      try {
+        
+        // TODO: Send edit client request to backend
+        console.log(client.client_id);
+
+      } catch(err) {
+        console.log('Error editing client record', err);
+        rej();
+      }
+    });
+  }
+
+  /**
+   * 
+   * @param client_id client id to be removed
+   */
+  async removeClient(client_id: string) {
+    
+    let promise = new Promise((res, rej) => {
+      try {
+
+        // TODO: Send remove client request to backend
+        console.log(client_id);
+
+      } catch(err) {
+        console.log('Error removing client record', err);
+        rej();
+      }
+    });
   }
 }
