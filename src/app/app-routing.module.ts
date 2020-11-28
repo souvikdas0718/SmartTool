@@ -5,7 +5,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { MainComponent } from './main/main.component'
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
-import { RevenueComponent } from './revenueForm/revenueForm.component';
+import { RevenueDisplayComponent } from './revenue-display/revenue-display.component';
 import { GraphAnalyticsComponent } from './graph-analytics/graph-analytics.component';
 import { ClientDisplayComponent } from './client-display/client-display.component';
 
@@ -15,7 +15,7 @@ const routes: Routes = [
   { path: 'main', component: MainComponent },
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
-  { path: 'revenueForm', component: RevenueComponent },
+  { path: 'revenue', component: RevenueDisplayComponent },
   {path:'smartanalysis',component: GraphAnalyticsComponent},
   {path: 'clients', component: ClientDisplayComponent}
 ];

@@ -13,6 +13,7 @@ import { GraphAnalyticsComponent } from './graph-analytics/graph-analytics.compo
 import { HeaderComponent } from './header/header.component';
 import { ClientFormComponent } from './client-form/client-form.component';
 import { ClientDisplayComponent } from './client-display/client-display.component';
+import { RevenueDisplayComponent } from './revenue-display/revenue-display.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { ClientDisplayComponent } from './client-display/client-display.componen
     GraphAnalyticsComponent,
     HeaderComponent,
     ClientFormComponent,
-    ClientDisplayComponent
+    ClientDisplayComponent,
+    RevenueDisplayComponent
   ],
   imports: [
     BrowserModule,
