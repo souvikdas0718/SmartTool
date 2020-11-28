@@ -9,6 +9,8 @@ import { DatePipe, registerLocaleData } from '@angular/common';
 import { environment } from '../environments/environment';
 import { User } from './user';
 import { Client } from './client';
+import { UserRevenue } from './userRevenue';
+import { rejects } from 'assert';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json'})
@@ -28,7 +30,7 @@ export class MainService {
   constructor() { }
 
   /**
-   * 
+   *
    * Creates firebase user-auth record, and firebase user record
    * @param user_name     Name of company user
    * @param email         Email address for login creds
@@ -36,7 +38,7 @@ export class MainService {
    * @param avg_wage      Average of monthly wage costs per employee in company
    * @param num_employees Number of employees working for company
    * @returns user's uid
-   * 
+   *
    */
   async createUser(user_name: string,
                     email: string,
@@ -48,20 +50,20 @@ export class MainService {
       let promise = new Promise((res, rej) => {
         // Create user auth account with firebase
         firebase.auth().createUserWithEmailAndPassword(email, password).then((user) => {
-        
+
           // Create user record in firestore
           var new_user = new User();
           new_user.setData(user.user.uid, user_name, email, avg_wage, num_employees);
           db.collection('Users').doc(new_user.uid).set(Object.assign({}, new_user)).then((user) => {
             console.log('Success creating new user');
             res(new_user.getUID());
-          
+
           }).catch((err) => { rej(err); });
         }).catch((err) => { rej(err); });
       }).catch((err) => { throw err; });
 
       let result = await promise;
-      return(result + ""); 
+      return(result + "");
 
     } catch(err) { throw err; }
   }
@@ -188,5 +190,118 @@ export class MainService {
         rej();
       }
     });
+
+    await promise;
+  }
+
+  /**
+   * 
+   * @param uid user id of current user 
+   */
+  async getRevenue(uid: string): Promise<UserRevenue[]> {
+    
+    var revenue_records = [];
+    let promise = new Promise((res, rej) => {
+      try {
+
+        //TODO: contact backend to get records
+
+        // Placeholder data retreival
+        // TODO: remove once backend available
+        var date = [new Date('2020-01-01'),
+                new Date('2020-01-01'),
+                new Date('2020-01-01'),
+                new Date('2020-01-01'),
+                new Date('2020-01-01')]
+        var revenue = [10, 1000, 10000, 20000, 30000]
+        var office_costs = [10, 1000, 10000, 20000, 30000]
+        var wage_costs = [10, 1000, 10000, 20000, 30000]
+        var marketing_costs = [10, 1000, 10000, 20000, 30000]
+        var operation_costs = [10, 1000, 10000, 20000, 30000]
+        var other_costs = [10, 1000, 10000, 20000, 30000]
+
+        for (var i = 0; i < 5; i++) {
+          var new_revenue = new UserRevenue();
+          new_revenue.setData('' + i, date[i], revenue[i], office_costs[i], wage_costs[i], marketing_costs[i], operation_costs[i], other_costs[i]);
+          revenue_records.push(new_revenue);
+        }
+
+        /////////////////////////////////
+        // TODO: Retrieve client data from backend
+        res(revenue_records)
+
+      } catch(err) {
+        console.log('Error adding revenue record', err);
+        rej();
+      }
+    });
+
+    await promise;
+    return revenue_records;
+  }
+
+  /**
+   * creates new revenue report
+   * @param date 
+   * @param office_costs 
+   * @param wage_costs 
+   * @param marketing_costs 
+   * @param other_costs 
+   * @param operation_costs 
+   * @param revenue 
+   */
+  async createRevenue(date, office_costs, wage_costs, marketing_costs, other_costs, operation_costs, revenue){
+    let promise = new Promise((res, rej) => {
+      try {
+
+        //TODO: contact backend to add record
+
+      } catch(err) {
+        console.log('Error adding revenue record', err);
+        rej();
+      }
+    });
+
+    await promise;
+  }
+
+  /**
+   * updates revenue report
+   * @param revenue updated revenue record
+   */
+  async editRevenue(revenue: UserRevenue){
+    let promise = new Promise((res, rej) => {
+      try {
+
+        //TODO: contact backend to edit record
+
+      } catch(err) {
+        console.log('Error adding revenue record', err);
+        rej();
+      }
+    });
+
+    await promise;
+  }
+
+  /**
+   * 
+   * @param revenue_id id of revenue record to delete
+   */
+  async removeRevenue(revenue_id: string){
+    let promise = new Promise((res, rej) => {
+      try {
+
+        //TODO: contact backend to remove record
+        
+      } catch(err) {
+        console.log('Error adding revenue record', err);
+        rej();
+      }
+    });
+
+    await promise;
   }
 }
+
+
