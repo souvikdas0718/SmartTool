@@ -7,7 +7,7 @@ export class UserRevenue {
   wage_costs: number;
   marketing_costs: number;
   other_costs: number;
-  operation_cost: number;
+  operation_costs: number;
   revenue: number;
 
   constructor() {
@@ -17,19 +17,19 @@ export class UserRevenue {
     this.wage_costs = 0;
     this.marketing_costs = 0;
     this.other_costs = 0;
-    this.operation_cost = 0;
+    this.operation_costs = 0;
     this.revenue = 0;
   }
 
   // Adds data to empty User object
-  setData(uid: string, date: Date, office_costs: number, wage_costs: number, marketing_costs: number, other_costs: number, operation_cost: number, revenue: number) {
+  setData(uid: string, date: Date, office_costs: number, wage_costs: number, marketing_costs: number, other_costs: number, operation_costs: number, revenue: number) {
     this.uid = uid;
     this.date = date;
     this.office_costs = office_costs;
     this.wage_costs = wage_costs;
     this.marketing_costs = marketing_costs;
     this.other_costs = other_costs;
-    this.operation_cost = operation_cost;
+    this.operation_costs = operation_costs;
     this.revenue = revenue;
   }
 
@@ -51,8 +51,8 @@ export class UserRevenue {
   setOtherCost(other_costs: number) { this.other_costs = other_costs; }
   getOtherCost(): number { return this.other_costs; }
 
-  setOperationCost(operation_cost: number) { this.operation_cost = operation_cost; }
-  getOperationCost(): number { return this.operation_cost; }
+  setOperationCost(operation_costs: number) { this.operation_costs = operation_costs; }
+  getOperationCost(): number { return this.operation_costs; }
 
   setRevenue(revenue: number) { this.revenue = revenue; }
   getRevenue(): number { return this.revenue; }

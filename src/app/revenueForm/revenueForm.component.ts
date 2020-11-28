@@ -5,6 +5,7 @@ import {CookieService} from 'ngx-cookie-service';
 
 import {MainService} from '../main.service';
 import {AlertModalComponent} from '../alert-modal/alert-modal.component'
+import { UserRevenue } from '../userRevenue';
 
 @Component({
   selector: 'app-revenueForm',
@@ -34,15 +35,15 @@ export class RevenueComponent implements OnInit {
     wage_costs: number,
     marketing_costs: number,
     other_costs: number,
-    operation_cost: number,
+    operation_costs: number,
     revenue: number): void {
 
     // Ensure form is complete & emails, passwords are confirmed
-    if (date != '' && office_costs > 0 && wage_costs > 0 && marketing_costs > 0 && other_costs > 0 && operation_cost > 0 && revenue > 0) {
+    if (date != '' && office_costs > 0 && wage_costs > 0 && marketing_costs > 0 && other_costs > 0 && operation_costs > 0 && revenue > 0) {
 
-      this.mainService.createRevenue(date, office_costs, wage_costs, marketing_costs, other_costs, operation_cost, revenue).then((uid) => {
-        this.cookieService.set('current_user', uid)
-        this.router.navigate(['/']);
+      let revenue = new UserRevenue();
+      this.mainService.createRevenue(date, office_costs, wage_costs, marketing_costs, other_costs, operation_costs, revenue).then(() => {
+        
 
       }).catch((err) => {
         this.alertModal(err.message);

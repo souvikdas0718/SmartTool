@@ -58,7 +58,7 @@ export class RevenueDisplayComponent implements OnInit {
                 wage_costs: number,
                 marketing_costs: number,
                 other_costs: number,
-                operation_cost: number,
+                operation_costs: number,
                 revenue: number){
 
     if(this.edit_revenue.uid != "") {
@@ -68,7 +68,7 @@ export class RevenueDisplayComponent implements OnInit {
       if (wage_costs > 0) { this.edit_revenue.wage_costs = wage_costs; }
       if (marketing_costs > 0) { this.edit_revenue.marketing_costs = marketing_costs; }
       if (other_costs > 0) { this.edit_revenue.other_costs = other_costs; }
-      if (operation_cost > 0) { this.edit_revenue.operation_cost = operation_cost; }
+      if (operation_costs > 0) { this.edit_revenue.operation_costs = operation_costs; }
       if (revenue > 0) { this.edit_revenue.revenue = revenue; }
 
       this.mainService.editRevenue(this.edit_revenue).then(() => {
@@ -92,7 +92,7 @@ export class RevenueDisplayComponent implements OnInit {
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'});
   }
 
-  openNewClientModal() {
+  openNewRevenueModal() {
     const active_modal = this.modalService.open(RevenueComponent);
   }
 

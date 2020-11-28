@@ -1,24 +1,32 @@
 <div id="table-header">
-    <h3 id="table-title">Active Clients</h3>
-    <button class="btn btn-outline-success" (click)="openNewClientModal();">Add Client</button>  
+    <h3 id="table-title">Revenue Reports</h3>
+    <button class="btn btn-outline-success" (click)="openNewRevenueModal();">Add Report</button>  
   </div>
   <table class="table">
     <thead>
       <tr>
-        <th scope="col">Client Name</th>
-        <th scope="col">Contract Start Date</th>
-        <th scope="col">Contract End Date</th>
-        <th scope="col">Total Contract Revenue</th>
+        <th scope="col">Date</th>
+        <th scope="col">Revenue</th>
+        <th scope="col">Office Costs</th>
+        <th scope="col">Wage Costs</th>
+        <th scope="col">Marketing Costs</th>
+        <th scope="col">Operations Costs</th>
+        <th scope="col">Other Costs</th>
+        <th scope="col">Profit</th>
         <th scope="col"></th>
         <th scope="col"></th>
       </tr>
     </thead>
-    <tbody *ngFor="let client of clients">
+    <tbody *ngFor="let revenue of revenue_reports">
       <tr>
-        <td>{{ client.client_name }}</td>
-        <td>{{ client.start_date | date : "dd.MM.y" }}</td>
-        <td>{{ client.end_date | date : "dd.MM.y" }}</td>
-        <td>{{ client.revenue }}</td>
+        <td>{{ revenue.date | date : "dd.MM.y" }}</td>
+        <td>{{ revenue.revenue }}</td>
+        <td>{{ revenue.office_costs }}</td>
+        <td>{{ revenue.wage_costs }}</td>
+        <td>{{ revenue.marketing_costs }}</td>
+        <td>{{ revenue.operation_costs }}</td>
+        <td>{{ revenue.other_costs }}</td>
+        <td>{{ revenue.revenue - (revenue.other_costs + revenue.operation_costs + revenue.marketing_costs + revenue.wage_costs + revenue.office_costs) }}</td>
         <!--Edit button bootstrap icon-->
         <td><button type="button"
           class="btn btn-outline-primary"
@@ -49,26 +57,26 @@
       <form>
         <div class="form-group">
           <label>Client Name</label>
-          <input #client_name type="text" class="form-control" placeholder="{{ edit_client.client_name }}">
+          <input #date type="text" class="form-control" placeholder="{{ edit_client.client_name }}">
         </div>
         <div class="form-group">
           <label>Contract Start Date</label>
-          <input #start_date type="date" class="form-control" [value]="edit_client.start_date | date : 'yyyy-MM-dd'">
+          <input #revenue type="date" class="form-control" [value]="edit_client.start_date | date : 'yyyy-MM-dd'">
         </div>
         <div class="form-group">
           <label>Contract End Date</label>
-            <input #end_date type="date" class="form-control" [value]="edit_client.end_date | date : 'yyyy-MM-dd'">
+            <input #operation_costs type="date" class="form-control" [value]="edit_client.end_date | date : 'yyyy-MM-dd'">
         </div>
         <div class="form-group">
           <label>Total Contract Revenue</label>
-          <input #revenue type="number" class="form-control" placeholder="{{ edit_client.revenue }}">
+          <input #office_costs type="number" class="form-control" placeholder="{{ edit_client.revenue }}">
         </div>
       </form>
     </div>
     <div class="modal-footer">
       <button type="button"
               class="btn btn-outline-success"
-              (click)="editClient(client_name.value, start_date.value, end_date.value, revenue.value);
+              (click)="editRevenue(client_name.value, start_date.value, end_date.value, revenue.value);
                        client_name.value='';
                        start_date.value='';
                        end_date.value='';
