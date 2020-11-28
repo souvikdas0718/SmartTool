@@ -201,6 +201,30 @@ export class MainService {
 
         //TODO: contact backend to get records
 
+        // Placeholder data retreival
+        // TODO: remove once backend available
+        var date = [new Date('2020-01-01'),
+                new Date('2020-01-01'),
+                new Date('2020-01-01'),
+                new Date('2020-01-01'),
+                new Date('2020-01-01')]
+        var revenue = [10, 1000, 10000, 20000, 30000]
+        var office_costs = [10, 1000, 10000, 20000, 30000]
+        var wage_costs = [10, 1000, 10000, 20000, 30000]
+        var marketing_costs = [10, 1000, 10000, 20000, 30000]
+        var operation_costs = [10, 1000, 10000, 20000, 30000]
+        var other_costs = [10, 1000, 10000, 20000, 30000]
+
+        for (var i = 0; i < 5; i++) {
+          var new_revenue = new UserRevenue();
+          new_revenue.setData('' + i, date[i], revenue[i], office_costs[i], wage_costs[i], marketing_costs[i], operation_costs[i], other_costs[i]);
+          revenue_records.push(new_revenue);
+        }
+
+        /////////////////////////////////
+        // TODO: Retrieve client data from backend
+        res(revenue_records)
+
       } catch(err) {
         console.log('Error adding revenue record', err);
         rej();
@@ -211,7 +235,7 @@ export class MainService {
     return revenue_records;
   }
 
-  async createRevenue(revenue: UserRevenue){
+  async createRevenue(date, office_costs, wage_costs, marketing_costs, other_costs, operation_costs, revenue){
     let promise = new Promise((res, rej) => {
       try {
 
