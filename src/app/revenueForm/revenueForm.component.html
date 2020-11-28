@@ -1,4 +1,4 @@
-<div class="form-body">
+<div id="form-body">
   <div>
     <h1>Monthly Revenue Cost</h1>
   </div>
@@ -28,7 +28,7 @@
         </div>
         <button type="button"
                 class="btn btn-primary"
-                (click)="revenueForm(date.value, office_costs.valueAsNumber,
+                (click)="createRevenue(date.value, office_costs.valueAsNumber,
                                   wage_costs.valueAsNumber, marketing_costs.valueAsNumber,
                                   other_costs.valueAsNumber, operation_cost.valueAsNumber, revenue.valueAsNumber);
                           date.value = '';

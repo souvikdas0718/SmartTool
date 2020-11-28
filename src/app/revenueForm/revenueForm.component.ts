@@ -24,12 +24,8 @@ export class RevenueComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  /**
-   *
-   * Creates firebase auth-user record and firestore user record
-   *
-   */
-  revenueForm(
+  
+  createRevenue(
     date: string,
     office_costs: number,
     wage_costs: number,
@@ -43,7 +39,7 @@ export class RevenueComponent implements OnInit {
 
       let revenue = new UserRevenue();
       this.mainService.createRevenue(date, office_costs, wage_costs, marketing_costs, other_costs, operation_costs, revenue).then(() => {
-        
+        this.modalService.dismissAll();        
 
       }).catch((err) => {
         this.alertModal(err.message);

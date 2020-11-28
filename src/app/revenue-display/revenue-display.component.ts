@@ -52,8 +52,7 @@ export class RevenueDisplayComponent implements OnInit {
     });
   }
 
-  editRevenue(revenue_d: string, 
-                date: Date,
+  editRevenue(date: Date,
                 office_costs: number,
                 wage_costs: number,
                 marketing_costs: number,
