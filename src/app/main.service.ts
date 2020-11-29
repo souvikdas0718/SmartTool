@@ -394,6 +394,58 @@ export class MainService {
     await promise;
     return profit_vec;
   }
+
+  async getRevenuePerMonth(): Promise<number[][]> {
+    var revenue = [];
+    let current_uid = this.cookieService.get('current_user');
+
+    let promise = new Promise((res, rej) => {
+      try {
+
+        this.getRevenue(current_uid).then((revenue_records) => {
+          revenue_records.forEach((record) => {
+            revenue.push(record.revenue)
+          
+          });
+        });
+        res(revenue);
+
+      } catch(err) {
+        rej();
+      }
+    });
+
+    await promise;
+    return revenue;
+  }
+
+  async getCostsPerMonth(): Promise<number[][]> {
+    var costs = [];
+    let current_uid = this.cookieService.get('current_user');
+
+    let promise = new Promise((res, rej) => {
+      try {
+
+        this.getRevenue(current_uid).then((revenue_records) => {
+          revenue_records.forEach((record) => {
+            costs.push(record.marketing_costs +
+                          record.office_costs +
+                          record.operation_costs +
+                          record.other_costs +
+                          record.wage_costs);
+          
+          });
+        });
+        res(costs);
+
+      } catch(err) {
+        rej();
+      }
+    });
+
+    await promise;
+    return costs;
+  }
 }
 
 

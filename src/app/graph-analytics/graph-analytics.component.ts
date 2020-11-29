@@ -10,9 +10,15 @@ import {MainService} from '../main.service';
 })
 export class GraphAnalyticsComponent implements OnInit, DoCheck {
 
-  lineGraph:any = [];
+  profitPlot:any = [];
   profit_data = [];
-  updated_line = false;
+  updated_profit_plot = false;
+
+  revCostPlot:any = [];
+  rev_data = [];
+  costs_data = [];
+  updated_rev_plot = false;
+  updated_costs_plot = false;
 
   horizontalBar;
   stackedBar;
@@ -22,11 +28,22 @@ export class GraphAnalyticsComponent implements OnInit, DoCheck {
   // Check for plotting data here and update graphs
   ngDoCheck(): void {
     
-    if(this.profit_data.length > 0 && !this.updated_line){
-      
-      this.lineGraph.data.datasets[0].data = this.profit_data;
-      this.lineGraph.update();
-      this.updated_line = true;
+    if(this.profit_data.length > 0 && !this.updated_profit_plot){
+      this.profitPlot.data.datasets[0].data = this.profit_data;
+      this.profitPlot.update();
+      this.updated_profit_plot = true;
+    }
+
+    if(this.rev_data.length > 0 && !this.updated_rev_plot){
+      this.revCostPlot.data.datasets[1].data = this.rev_data;
+      this.revCostPlot.update();
+      this.updated_rev_plot = true;
+    }
+
+    if(this.costs_data.length > 0 && !this.updated_costs_plot){
+      this.revCostPlot.data.datasets[0].data = this.costs_data;
+      this.revCostPlot.update();
+      this.updated_costs_plot = true;
     }
   }
 
@@ -36,8 +53,15 @@ export class GraphAnalyticsComponent implements OnInit, DoCheck {
       this.profit_data = profit_records;
     });
 
+    this.mainService.getRevenuePerMonth().then((rev_records) => {
+      this.rev_data = rev_records;
+    });
 
-    this.lineGraph = new Chart('lineGraph',{
+    this.mainService.getCostsPerMonth().then((cost_records) => {
+      this.costs_data = cost_records;
+    });
+
+    this.profitPlot = new Chart('profitPlot',{
       type: 'line',
       data: {
         labels: ['January',
@@ -60,6 +84,73 @@ export class GraphAnalyticsComponent implements OnInit, DoCheck {
             fill: true,
           },
 
+        ]
+      },
+      options:
+      {
+        title:
+        {
+          display: true,
+          text: ''
+        },
+        legend:
+        {
+          display: false,
+          position: 'right'
+        },
+        animation: {
+          animateScale: true,
+          animateRotate: true
+        },
+
+        scales: {
+          xAxes: [
+            {
+
+              ticks: {
+                display: true,
+                beginAtZero: true//this will remove only the label
+              },
+              gridLines: {
+                display: false
+              }
+            }],
+          yAxes: [{
+            gridLines: {
+              display: true
+            }
+          }]
+        }
+      }
+    });
+
+    this.revCostPlot = new Chart('revCostPlot',{
+      type: 'line',
+      data: {
+        labels: ['January',
+          'February',
+          'March',
+          'April',
+          'May',
+          'June',
+          'July',
+          'August',
+          'September',
+          'October',
+          'November',
+          'December'],
+        datasets: [
+          {
+            label: 'Costs',
+            data: [],
+            backgroundColor: '#ed382b',
+            fill: true,
+          },{
+            label: 'Revenue',
+            data: [],
+            backgroundColor: '#29db0e',
+            fill: true,
+          }
         ]
       },
       options:
