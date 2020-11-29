@@ -268,7 +268,6 @@ export class MainService {
     let promise = new Promise((res, rej) => {
       try {
 
-        //TODO: contact backend to add record
         let current_uid = this.cookieService.get('current_user');
         var new_revenue = {
           date: date,
@@ -303,7 +302,21 @@ export class MainService {
     let promise = new Promise((res, rej) => {
       try {
 
-        //TODO: contact backend to edit record
+        let current_uid = this.cookieService.get('current_user');
+        var updated_revenue = {
+          date: revenue.date,
+          office_costs: revenue.office_costs,
+          wage_costs: revenue.wage_costs,
+          marketing_costs: revenue.marketing_costs,
+          other_costs: revenue.other_costs,
+          operation_costs: revenue.operation_costs,
+          revenue: revenue.revenue
+        }
+
+        db.collection('Users').doc(current_uid).collection('Revenue').doc(revenue.uid).set(updated_revenue).then(() => {
+          console.log('Success updating revenue record');
+          res(1);
+        });
 
       } catch(err) {
         console.log('Error adding revenue record', err);
