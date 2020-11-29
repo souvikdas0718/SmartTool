@@ -143,7 +143,6 @@ export class MainService {
       try {
 
         let current_uid = this.cookieService.get('current_user');
-        console.log(current_uid);
         db.collection('Users').doc(current_uid).collection('Clients').get().then((clients) => {
             clients.forEach((client) => {
               var client_data = client.data();
@@ -177,8 +176,6 @@ export class MainService {
     let promise = new Promise((res, rej) => {
       try {
         
-        // TODO: Send edit client request to backend
-
         let current_uid = this.cookieService.get('current_user');
 
         var updated_client = {
@@ -231,32 +228,22 @@ export class MainService {
     let promise = new Promise((res, rej) => {
       try {
 
-        //TODO: contact backend to get records
+        let current_uid = this.cookieService.get('current_user');
+        db.collection('Users').doc(current_uid).collection('Revenue').get().then((reports) => {
+            reports.forEach((report) => {
+              var revenue_data = report.data();
+              var new_revenue = new UserRevenue();
+              new_revenue.setData(report.id, revenue_data.date, revenue_data.office_costs,
+                                    revenue_data.wage_costs, revenue_data.marketing_costs,
+                                    revenue_data.other_costs, revenue_data.operation_costs,
+                                    revenue_data.revenue);
+              revenue_records.push(new_revenue);
 
-        // Placeholder data retreival
-        // TODO: remove once backend available
-        var date = [new Date('2020-01-01'),
-                new Date('2020-01-01'),
-                new Date('2020-01-01'),
-                new Date('2020-01-01'),
-                new Date('2020-01-01')]
-        var revenue = [10, 1000, 10000, 20000, 30000]
-        var office_costs = [10, 1000, 10000, 20000, 30000]
-        var wage_costs = [10, 1000, 10000, 20000, 30000]
-        var marketing_costs = [10, 1000, 10000, 20000, 30000]
-        var operation_costs = [10, 1000, 10000, 20000, 30000]
-        var other_costs = [10, 1000, 10000, 20000, 30000]
-
-        for (var i = 0; i < 5; i++) {
-          var new_revenue = new UserRevenue();
-          new_revenue.setData('' + i, date[i], revenue[i], office_costs[i], wage_costs[i], marketing_costs[i], operation_costs[i], other_costs[i]);
-          revenue_records.push(new_revenue);
-        }
-
-        /////////////////////////////////
-        // TODO: Retrieve client data from backend
-        res(revenue_records)
-
+            });
+            // sorting client records by date
+            revenue_records.sort((a, b) => {return b.date - a.date});
+            res(revenue_records);
+          });
       } catch(err) {
         console.log('Error adding revenue record', err);
         rej();
@@ -282,7 +269,23 @@ export class MainService {
       try {
 
         //TODO: contact backend to add record
+        let current_uid = this.cookieService.get('current_user');
+        var new_revenue = {
+          date: date,
+          office_costs: office_costs,
+          wage_costs: wage_costs,
+          marketing_costs: marketing_costs,
+          other_costs: other_costs,
+          operation_costs: operation_costs,
+          revenue: revenue
+        }
 
+        db.collection('Users').doc(current_uid).collection('Revenue').doc().set(new_revenue)
+        .then(() => {
+          console.log('Success creating revenue record');
+          res(1);
+        });
+        
       } catch(err) {
         console.log('Error adding revenue record', err);
         rej();
