@@ -46,7 +46,7 @@ export class RevenueDisplayComponent implements OnInit {
    */
   removeRevenue(revenue_id: string): void {
     this.mainService.removeRevenue(revenue_id).then(() => {
-
+      window.location.reload();
     }).catch((err) => {
       console.log(err);
     });

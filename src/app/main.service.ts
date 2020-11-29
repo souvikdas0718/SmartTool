@@ -321,11 +321,16 @@ export class MainService {
   async removeRevenue(revenue_id: string){
     let promise = new Promise((res, rej) => {
       try {
-
         //TODO: contact backend to remove record
+        let current_uid = this.cookieService.get('current_user');
+        db.collection('Users').doc(current_uid).collection('Revenue').doc(revenue_id).delete()
+        .then(() => {
+          console.log('Success deleting revenue record');
+          res(1);
+        });
         
       } catch(err) {
-        console.log('Error adding revenue record', err);
+        console.log('Error deleting revenue record', err);
         rej();
       }
     });
