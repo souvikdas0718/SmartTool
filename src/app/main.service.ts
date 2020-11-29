@@ -111,7 +111,7 @@ export class MainService {
     let promise = new Promise((res, rej) => {
 
       try{
-        let current_uid = this.cookieService.get('current_user')
+        let current_uid = this.cookieService.get('current_user');
         var new_client = {
           client_name: client_name,
           start_date: start_date,
@@ -138,42 +138,34 @@ export class MainService {
    * @returns       All client records for given user
    */
   async getClients(user_id: string): Promise<Client[]> {
-
-    var clients = [];
+    var client_list = [];
     let promise = new Promise((res, rej) => {
       try {
 
-        // Placeholder data retreival
-        // TODO: remove once backend available
-        var n = ['amd', 'rty', 'cisco', 'ewra', 'tre']
-        var std = [new Date('2020-01-01'),
-                new Date('2020-01-01'),
-                new Date('2020-01-01'),
-                new Date('2020-01-01'),
-                new Date('2020-01-01')]
-        var etd = [new Date('2020-01-12'),
-                new Date('2020-01-12'),
-                new Date('2020-01-12'),
-                new Date('2020-01-12'),
-                new Date('2020-01-12')];
-        var rev = [10, 1000, 10000, 20000, 30000]
-        for (var i = 0; i < 5; i++) {
-          var new_client = new Client();
-          new_client.setData('' + i, n[i], std[i], etd[i], rev[i]);
-          clients.push(new_client);
-        }
-        /////////////////////////////////
-        // TODO: Retrieve client data from backend
-        res(clients)
+        let current_uid = this.cookieService.get('current_user');
+        console.log(current_uid);
+        db.collection('Users').doc(current_uid).collection('Clients').get().then((clients) => {
+            clients.forEach((client) => {
+              var client_data = client.data();
+              var new_client = new Client();
+              new_client.setData(client.id, client_data.client_name, client_data.start_date,
+                                  client_data.end_date, client_data.revenue);
+              client_list.push(new_client);
+
+            });
+            // sorting client records by date
+            client_list.sort((a, b) => {return b.start_date - a.start_date});
+            res(client_list);
+          });
 
       } catch(err) {
         console.log('Error getting client data', err)
-        rej(clients)
+        rej(client_list)
       }
     });
 
     await promise;
-    return clients;
+    return client_list;
   }
 
   /**
