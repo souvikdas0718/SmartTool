@@ -2,15 +2,14 @@ import { Injectable } from '@angular/core';
 import firebase from 'firebase';
 import 'firebase/auth'
 import 'firebase/firestore'
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { DatePipe, registerLocaleData } from '@angular/common';
+import { HttpHeaders } from '@angular/common/http';
+import { CookieService } from 'ngx-cookie-service';
 
 // Datatype definitions
 import { environment } from '../environments/environment';
 import { User } from './user';
 import { Client } from './client';
 import { UserRevenue } from './userRevenue';
-import { rejects } from 'assert';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json'})
@@ -27,7 +26,7 @@ export class MainService {
 
   private dbUrl = environment.apiURL;
 
-  constructor() { }
+  constructor(private cookieService: CookieService) { }
 
   /**
    *
@@ -108,7 +107,30 @@ export class MainService {
                     start_date: Date,
                     end_date: Date,
                     revenue: number){
-    //TODO: Contact backend and retrieve response
+    
+    let promise = new Promise((res, rej) => {
+
+      try{
+        let current_uid = this.cookieService.get('current_user')
+        var new_client = {
+          client_name: client_name,
+          start_date: start_date,
+          end_date: end_date,
+          revenue: revenue
+        }
+        db.collection('Users').doc(current_uid).collection('Clients').doc().set(new_client)
+        .then(() => {
+          console.log('Success creating client record');
+          res(1);
+        });
+
+      } catch(err){
+        console.log("Error creating client record.");
+        res(0);
+      }
+    });
+
+    await promise;
   }
 
   /**
