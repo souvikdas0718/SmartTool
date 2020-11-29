@@ -48,6 +48,8 @@ export class ClientDisplayComponent implements OnInit {
   removeClient(client_id: string): void {
     this.mainService.removeClient(client_id).then((clients) => {
 
+      window.location.reload();  
+
     }).catch((err) => {
       console.log(err);
     });

@@ -37,6 +37,7 @@ export class ClientFormComponent implements OnInit {
         this.mainService.addClient(client_name, start_date, end_date, revenue).then(() => {
 
           this.modalService.dismissAll();
+          window.location.reload();  
 
         }).catch((err) => {
           this.alertModal(err.message);

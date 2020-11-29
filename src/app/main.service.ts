@@ -116,7 +116,8 @@ export class MainService {
           client_name: client_name,
           start_date: start_date,
           end_date: end_date,
-          revenue: revenue
+          revenue: revenue,
+          is_active: true
         }
         db.collection('Users').doc(current_uid).collection('Clients').doc().set(new_client)
         .then(() => {
@@ -148,9 +149,9 @@ export class MainService {
               var client_data = client.data();
               var new_client = new Client();
               new_client.setData(client.id, client_data.client_name, client_data.start_date,
-                                  client_data.end_date, client_data.revenue);
-              client_list.push(new_client);
-
+                                  client_data.end_date, client_data.revenue, client_data.is_active);
+            
+              if(new_client.is_active) { client_list.push(new_client); }
             });
             // sorting client records by date
             client_list.sort((a, b) => {return b.start_date - a.start_date});
@@ -182,7 +183,8 @@ export class MainService {
           client_name: client.client_name,
           start_date: client.start_date,
           end_date: client.end_date,
-          revenue: client.revenue
+          revenue: client.revenue,
+          is_active: true
         }
         db.collection('Users').doc(current_uid).collection('Clients').doc(client.client_id).set(updated_client)
           .then(() => {
@@ -206,8 +208,24 @@ export class MainService {
     let promise = new Promise((res, rej) => {
       try {
 
-        // TODO: Send remove client request to backend
-        console.log(client_id);
+        let current_uid = this.cookieService.get('current_user');
+
+
+        db.collection('Users').doc(current_uid).collection('Clients').doc(client_id).get().then((client_snap) => {
+          let client_data = client_snap.data();
+          var removed_client = {
+            client_name: client_data.client_name,
+            start_date: client_data.start_date,
+            end_date: client_data.end_date,
+            revenue: client_data.revenue,
+            is_active: false
+          }
+          db.collection('Users').doc(current_uid).collection('Clients').doc(client_id).set(removed_client)
+            .then(() => {
+              console.log('Success removing client record');
+              res(1);
+            });
+        });
 
       } catch(err) {
         console.log('Error removing client record', err);
