@@ -1,19 +1,42 @@
-import { Component, OnInit, AfterViewInit, DoCheck } from '@angular/core';
+import { Component, OnInit, DoCheck } from '@angular/core';
 import { Chart } from 'chart.js';
+
+import {MainService} from '../main.service';
 
 @Component({
   selector: 'app-graph-analytics',
   templateUrl: './graph-analytics.component.html',
   styleUrls: ['./graph-analytics.component.css']
 })
-export class GraphAnalyticsComponent implements OnInit {
+export class GraphAnalyticsComponent implements OnInit, DoCheck {
 
-  constructor() { }
-  lineGraph:any  = [];
+  lineGraph:any = [];
+  profit_data = [];
+  updated_line = false;
+
   horizontalBar;
   stackedBar;
-  intialdata = [10, 20, 5, 10, 2]; 
+
+  constructor(private mainService: MainService) { }
+
+  // Check for plotting data here and update graphs
+  ngDoCheck(): void {
+    
+    if(this.profit_data.length > 0 && !this.updated_line){
+      
+      this.lineGraph.data.datasets[0].data = this.profit_data;
+      this.lineGraph.update();
+      this.updated_line = true;
+    }
+  }
+
   ngOnInit(): void {
+    
+    this.mainService.getProfitPerMonth().then((profit_records) => {
+      this.profit_data = profit_records;
+    });
+
+
     this.lineGraph = new Chart('lineGraph',{
       type: 'line',
       data: {
@@ -31,8 +54,8 @@ export class GraphAnalyticsComponent implements OnInit {
           'December'],
         datasets: [
           {
-            label: 'Profit Percent',
-            data: [1, 2, -3, 2, 0, 5, 3, 4, -2, 1, 6, 1],
+            label: 'Profit',
+            data: [],
             backgroundColor: '#fee3b8',
             fill: true,
           },
@@ -75,10 +98,7 @@ export class GraphAnalyticsComponent implements OnInit {
           }]
         }
       }
-
-    })
-    //Ending of line grah about blog writting analysis
-
+    });
 
     //Starting of horizontal bar about job stage analysis
     this.horizontalBar = new Chart('horizontalBar', {
@@ -214,6 +234,7 @@ export class GraphAnalyticsComponent implements OnInit {
       }
     });
   }
+
   applyDateFilter(value){
     if(value==2){
       this.horizontalBar.datasets[0].data = [1,1,5,1,2];

@@ -258,8 +258,9 @@ export class MainService {
               revenue_records.push(new_revenue);
 
             });
-            // sorting client records by date
-            revenue_records.sort((a, b) => {return b.date - a.date});
+
+            // Sorting records by date
+            revenue_records = revenue_records.sort((a, b) => { return new Date(a.date).getTime() - new Date(b.date).getTime(); });
             res(revenue_records);
           });
       } catch(err) {
@@ -352,7 +353,6 @@ export class MainService {
   async removeRevenue(revenue_id: string){
     let promise = new Promise((res, rej) => {
       try {
-        //TODO: contact backend to remove record
         let current_uid = this.cookieService.get('current_user');
         db.collection('Users').doc(current_uid).collection('Revenue').doc(revenue_id).delete()
         .then(() => {
@@ -367,6 +367,32 @@ export class MainService {
     });
 
     await promise;
+  }
+
+  async getProfitPerMonth(): Promise<number[]> {
+    var profit_vec = [];
+    let current_uid = this.cookieService.get('current_user');
+    let promise = new Promise((res, rej) => {
+      try {
+
+        this.getRevenue(current_uid).then((revenue_records) => {
+          revenue_records.forEach((record) => {
+            profit_vec.push(record.revenue - (record.marketing_costs +
+                                                record.office_costs +
+                                                record.operation_costs +
+                                                record.other_costs +
+                                                record.wage_costs));
+          });
+        });
+        res(profit_vec);
+
+      } catch(err) {
+        rej();
+      }
+    });
+
+    await promise;
+    return profit_vec;
   }
 }
 
