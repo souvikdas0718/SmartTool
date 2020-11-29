@@ -178,7 +178,20 @@ export class MainService {
       try {
         
         // TODO: Send edit client request to backend
-        console.log(client.client_id);
+
+        let current_uid = this.cookieService.get('current_user');
+
+        var updated_client = {
+          client_name: client.client_name,
+          start_date: client.start_date,
+          end_date: client.end_date,
+          revenue: client.revenue
+        }
+        db.collection('Users').doc(current_uid).collection('Clients').doc(client.client_id).set(updated_client)
+          .then(() => {
+            console.log('Success updating client record');
+            res(1);
+          });
 
       } catch(err) {
         console.log('Error editing client record', err);
