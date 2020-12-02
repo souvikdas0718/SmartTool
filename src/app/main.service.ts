@@ -376,17 +376,17 @@ export class MainService {
       try {
 
         this.getRevenue(current_uid).then((revenue_records) => {
+          var record_dates = [];
+          var profit = [];
           revenue_records.forEach((record) => {
-            var profit_record = {
-              date: record.date,
-              profit: (record.revenue - (record.marketing_costs +
-                                        record.office_costs +
-                                        record.operation_costs +
-                                        record.other_costs +
-                                        record.wage_costs))
-            }
-            profit_vec.push(profit_record);
+            record_dates.push(record.date)
+            profit.push(record.revenue - (record.marketing_costs +
+                                            record.office_costs +
+                                            record.operation_costs +
+                                            record.other_costs +
+                                            record.wage_costs))
           });
+          profit_vec.push(record_dates, profit);
         });
         res(profit_vec);
 
@@ -396,6 +396,7 @@ export class MainService {
     });
 
     await promise;
+    console.log(profit_vec)
     return profit_vec;
   }
 
