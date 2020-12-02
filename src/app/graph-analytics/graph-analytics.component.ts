@@ -22,7 +22,7 @@ export class GraphAnalyticsComponent implements OnInit, DoCheck {
 
   costsBreakdownPlot:any = [];
   costs_breakdown_data = [];
-  updated_breakdown_data = false;
+  updated_breakdown_plot = false;
 
   horizontalBar;
   stackedBar;
@@ -33,7 +33,7 @@ export class GraphAnalyticsComponent implements OnInit, DoCheck {
   ngDoCheck(): void {
     
     // populating profits chart
-    if(this.profit_data.length > 0 && !this.updated_profit_plot){
+    if(this.profit_data.length > 0 && !this.updated_profit_plot) {
       this.profitPlot.data.labels = this.profit_data[0];
       this.profitPlot.data.datasets[0].data = this.profit_data[1];
       this.profitPlot.update();
@@ -41,7 +41,7 @@ export class GraphAnalyticsComponent implements OnInit, DoCheck {
     }
 
     // populating rev / cost chart w/ revenue and labels
-    if(this.rev_data.length > 0 && !this.updated_rev_plot){
+    if(this.rev_data.length > 0 && !this.updated_rev_plot) {
       this.revCostPlot.data.labels = this.rev_data[0];
       this.revCostPlot.data.datasets[1].data = this.rev_data[1];
       this.revCostPlot.update();
@@ -49,15 +49,24 @@ export class GraphAnalyticsComponent implements OnInit, DoCheck {
     }
 
     // populating rev / cost chart w/ costs
-    if(this.costs_data.length > 0 && !this.updated_costs_plot){
+    if(this.costs_data.length > 0 && !this.updated_costs_plot) {
       this.revCostPlot.data.datasets[0].data = this.costs_data[1];
       this.revCostPlot.update();
       this.updated_costs_plot = true;
+    }
+
+    // populatiing costs breakdown chart
+    if(this.costs_breakdown_data.length > 0 && !this.updated_breakdown_plot) {
+      this.costsBreakdownPlot.data.labels = this.costs_breakdown_data[0];
+      this.costsBreakdownPlot.data.datasets[0].data  = this.costs_breakdown_data[1];
+      this.costsBreakdownPlot.update()
+      this.updated_breakdown_plot = true;
     }
   }
 
   ngOnInit(): void {
     
+    // Retrieving chart data
     this.mainService.getProfitPerMonth().then((profit_records) => { this.profit_data = profit_records; });
     this.mainService.getRevenuePerMonth().then((rev_records) => { this.rev_data = rev_records; });
     this.mainService.getCostsPerMonth().then((cost_records) => { this.costs_data = cost_records; });
@@ -174,15 +183,12 @@ export class GraphAnalyticsComponent implements OnInit, DoCheck {
     this.costsBreakdownPlot = new Chart('costsBreakdown', {
       type: 'pie',
       data: {
-        labels: ['Java', 'Angular', 'PowerBI', 'Salesforce', 'AWS'],
+        labels: [],
         datasets: [{
-            data: [10, 20, 5, 10, 2],
+            data: [],
             backgroundColor: ['#9013fe', '#0088ff', '#29db0e', '#f8e82c', '#ed382b'],
             hoverBorderColor: '#e6e6ff',
-            hoverBorderWidth: 2,
-
-          }
-        ]
+            hoverBorderWidth: 2}]
       }
     });
 
