@@ -20,6 +20,8 @@ export class GraphAnalyticsComponent implements OnInit, DoCheck {
   updated_rev_plot = false;
   updated_costs_plot = false;
 
+  costsBreakdownPlot:any = [];
+
   horizontalBar;
   stackedBar;
 
@@ -171,6 +173,21 @@ export class GraphAnalyticsComponent implements OnInit, DoCheck {
             }
           }]
         }
+      }
+    });
+
+    this.costsBreakdownPlot = new Chart('costsBreakdown', {
+      type: 'pie',
+      data: {
+        labels: ['Java', 'Angular', 'PowerBI', 'Salesforce', 'AWS'],
+        datasets: [{
+            data: [10, 20, 5, 10, 2],
+            backgroundColor: ['#9013fe', '#0088ff', '#29db0e', '#f8e82c', '#ed382b'],
+            hoverBorderColor: '#e6e6ff',
+            hoverBorderWidth: 2,
+
+          }
+        ]
       }
     });
 
