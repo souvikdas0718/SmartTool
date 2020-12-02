@@ -457,6 +457,46 @@ export class MainService {
     await promise;
     return costs_vec;
   }
+
+  async getCostsBreakdown(): Promise<number[]>{
+    var costs_breakdown = []
+    var costs_labels = ['Office Costs', 'Wage Costs', 'Marketing Costs', 'Operations Costs', 'Other Costs']
+    let current_uid = this.cookieService.get('current_user');
+    console.log("TEST")
+    let promise = new Promise((res, rej) => {
+      try {
+
+        this.getRevenue(current_uid).then((revenue_records) => {
+          var office_costs = [];
+          var wage_costs = [];
+          var marketing_costs = [];
+          var operation_costs = [];
+          var other_costs = []
+          revenue_records.forEach((record) => {
+            office_costs.push(record.office_costs);
+            wage_costs.push(record.wage_costs);
+            marketing_costs.push(record.marketing_costs);
+            operation_costs.push(record.operation_costs);
+            other_costs.push(record.other_costs)
+          });
+
+          // pushing sum of each cost array
+          costs_breakdown.push(costs_labels, [office_costs.reduce((a, b) => a + b, 0),
+                                              wage_costs.reduce((a, b) => a + b, 0),
+                                              marketing_costs.reduce((a, b) => a + b, 0),
+                                              operation_costs.reduce((a, b) => a + b, 0),
+                                              other_costs.reduce((a, b) => a + b, 0)]);
+        });
+        res(costs_breakdown);
+
+      } catch(err) {
+        rej();
+      }
+    });
+    
+    await promise;
+    return costs_breakdown;
+  }
 }
 
 

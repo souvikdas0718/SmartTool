@@ -21,6 +21,8 @@ export class GraphAnalyticsComponent implements OnInit, DoCheck {
   updated_costs_plot = false;
 
   costsBreakdownPlot:any = [];
+  costs_breakdown_data = [];
+  updated_breakdown_data = false;
 
   horizontalBar;
   stackedBar;
@@ -56,17 +58,10 @@ export class GraphAnalyticsComponent implements OnInit, DoCheck {
 
   ngOnInit(): void {
     
-    this.mainService.getProfitPerMonth().then((profit_records) => {
-      this.profit_data = profit_records;
-    });
-
-    this.mainService.getRevenuePerMonth().then((rev_records) => {
-      this.rev_data = rev_records;
-    });
-
-    this.mainService.getCostsPerMonth().then((cost_records) => {
-      this.costs_data = cost_records;
-    });
+    this.mainService.getProfitPerMonth().then((profit_records) => { this.profit_data = profit_records; });
+    this.mainService.getRevenuePerMonth().then((rev_records) => { this.rev_data = rev_records; });
+    this.mainService.getCostsPerMonth().then((cost_records) => { this.costs_data = cost_records; });
+    this.mainService.getCostsBreakdown().then((costs_breakdown) => {this.costs_breakdown_data = costs_breakdown; });
 
     this.profitPlot = new Chart('profitPlot',{
       type: 'line',
