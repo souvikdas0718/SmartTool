@@ -121,18 +121,7 @@ export class GraphAnalyticsComponent implements OnInit, DoCheck {
     this.revCostPlot = new Chart('revCostPlot',{
       type: 'line',
       data: {
-        labels: ['January',
-          'February',
-          'March',
-          'April',
-          'May',
-          'June',
-          'July',
-          'August',
-          'September',
-          'October',
-          'November',
-          'December'],
+        labels: [],
         datasets: [
           {
             label: 'Costs',
