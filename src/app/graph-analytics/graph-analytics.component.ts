@@ -24,6 +24,10 @@ export class GraphAnalyticsComponent implements OnInit, DoCheck {
   costs_breakdown_data = [];
   updated_breakdown_plot = false;
 
+  clientsPlot:any = [];
+  clients_data = [];
+  updated_clients_plot = false;
+
   horizontalBar;
   stackedBar;
 
@@ -192,6 +196,19 @@ export class GraphAnalyticsComponent implements OnInit, DoCheck {
       }
     });
 
+    this.clientsPlot = new Chart('clients', {
+      type: 'line',
+      data: {
+        labels: ['test', 'test', 'test'],
+        datasets: [{
+          label: 'Clients',
+            data: [1,2,3],
+            backgroundColor: '#ed382b',
+            fill: true,
+        }]
+      }
+    });
+
     //Starting of horizontal bar about job stage analysis
     this.horizontalBar = new Chart('horizontalBar', {
       type: 'horizontalBar',
@@ -245,86 +262,6 @@ export class GraphAnalyticsComponent implements OnInit, DoCheck {
       }
     })
     //Ending of horizontal bar about job stage analysis
-
-    //Starting of Stacked bar about activity completion anaysis
-    this.stackedBar = new Chart('stackedBar', {
-      type: 'bar',
-      data: {
-        labels: ['amd',
-          'rty',
-          'Cisco',
-          'ewra',
-          'tre',
-          'Facebook', 
-          'Telus', 
-          'ABB'
-        ],
-        datasets: [
-          {
-            label: " Sprint Deliveries completed",
-            data: [10, 20, 5, 10, 2, 1, 12],
-            backgroundColor: '#b2b2b2',
-            hoverBorderColor: '#e6e6ff',
-            hoverBorderWidth: 2,
-          },
-          {
-            label: "Sprint Tasks in progress",
-            data: [1, 20, 6, 10, 2, 6,0,10],
-            backgroundColor: '#f4e1d2',
-            hoverBorderColor: '#e6e6ff',
-            hoverBorderWidth: 2,
-
-          },
-          {
-            label: "Sprint Backlog",
-            data: [1, 4, 6, 3, 2, 5,0, 1],
-            backgroundColor: '#bc5a45',
-            hoverBorderColor: '#80ced6',
-            hoverBorderWidth: 2,
-
-          }
-
-        ]
-      },
-      options:
-      {
-        title:
-        {
-          fontSize: 15,
-          display: true,
-          text: ''
-        },
-        legend:
-        {
-
-          display: false,
-          position: 'right'
-        },
-        animation: {
-          animateScale: true,
-          animateRotate: true
-        },
-        scales: {
-          xAxes: [
-            {
-              stacked: true,
-              ticks: {
-                display: true,
-                beginAtZero: true//this will remove only the label
-              },
-              gridLines: {
-                display: false
-              }
-            }],
-          yAxes: [{
-            stacked: true,
-            gridLines: {
-              display: false
-            }
-          }]
-        }
-      }
-    });
   }
 
   applyDateFilter(value){
