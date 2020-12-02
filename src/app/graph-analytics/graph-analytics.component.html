@@ -18,28 +18,30 @@
                 <canvas id="revCostPlot"></canvas></div>
         </div>
       </div>
-      <div class="col-lg-8 col-12" style=" margin-top: 30px; margin-bottom: 50px;">
-        <div class="cardStyle">
+      <div class="col-lg-5 card-deck" style=" margin-top: 30px; margin-bottom: 50px;">
+        <div class="card cardStyle">
             <div class="card-header" style="background-color: white;">
                 <h2 class="h2">Costs Breakdown</h2>
-                </div>
-        <div class="card-body"><canvas id="costsBreakdown"></canvas></div>
+              </div>
+            <div class="card-body">
+                <canvas id="costsBreakdown"></canvas></div>
+        </div>
+      </div>
+      <div class="col-lg-5 card-deck" style=" margin-top: 30px; margin-bottom: 50px;">
+        <div class="card cardStyle">
+            <div class="card-header" style="background-color: white;">
+                <h2 class="h2">Client Acquisition</h2>
+              </div>
+            <div class="card-body">
+                <canvas id="stackedBar"></canvas></div>
         </div>
       </div>
       <div class="col-lg-8 col-12" style=" margin-top: 30px; margin-bottom: 50px;">
           <div class="cardStyle">
               <div class="card-header" style="background-color: white;">
-                  <h2 class="h2">Client Acquisition</h2>
-                  </div>
-          <div class="card-body"><canvas id="stackedBar"></canvas></div>
-          </div>
-      </div>
-      <div class="col-lg-5" style="margin: 5px;">
-        <div class=" card cardStyle">
-            <div class="card-header" style="background-color: white;">
-               <h2 class="h2">Technologies currently in use here</h2> 
-                </div>
-            <div class="card-body">
+                  <h2 class="h2">Technologies currently in use here</h2>
+              </div>
+              <div class="card-body">
                 <canvas id="horizontalBar"></canvas>
                 <select  (change)="applyDateFilter($event.target.value)">
                     <option value="1">This Month</option>
@@ -48,9 +50,8 @@
                     <option value="4">Half Year</option>
                 </select>
             </div>
-        </div>
-
-    </div>
+          </div>
+      </div>
   </div>
 </div>
 
