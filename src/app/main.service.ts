@@ -377,11 +377,15 @@ export class MainService {
 
         this.getRevenue(current_uid).then((revenue_records) => {
           revenue_records.forEach((record) => {
-            profit_vec.push(record.revenue - (record.marketing_costs +
-                                                record.office_costs +
-                                                record.operation_costs +
-                                                record.other_costs +
-                                                record.wage_costs));
+            var profit_record = {
+              date: record.date,
+              profit: (record.revenue - (record.marketing_costs +
+                                        record.office_costs +
+                                        record.operation_costs +
+                                        record.other_costs +
+                                        record.wage_costs))
+            }
+            profit_vec.push(profit_record);
           });
         });
         res(profit_vec);
