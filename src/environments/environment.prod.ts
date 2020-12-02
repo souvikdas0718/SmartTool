@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  apiURL: 'http://localhost:3000',
+  apiURL: 'https://team8-smart-tool.herokuapp.com/',
   firebaseConfig: {
     apiKey: "AIzaSyAFUHYMn-RrXVn2HT_uObUZYJwpVb_ZoIA",
     authDomain: "team8-smarttool.firebaseapp.com",
