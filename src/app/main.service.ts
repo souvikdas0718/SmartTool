@@ -396,24 +396,26 @@ export class MainService {
     });
 
     await promise;
-    console.log(profit_vec)
     return profit_vec;
   }
 
   async getRevenuePerMonth(): Promise<number[][]> {
-    var revenue = [];
+    var revenue_vec = [];
     let current_uid = this.cookieService.get('current_user');
 
     let promise = new Promise((res, rej) => {
       try {
 
         this.getRevenue(current_uid).then((revenue_records) => {
+          var record_dates = [];
+          var revenue = [];
           revenue_records.forEach((record) => {
+            record_dates.push(record.date)
             revenue.push(record.revenue)
-          
           });
+          revenue_vec.push(record_dates, revenue)
         });
-        res(revenue);
+        res(revenue_vec);
 
       } catch(err) {
         rej();
@@ -421,27 +423,31 @@ export class MainService {
     });
 
     await promise;
-    return revenue;
+    return revenue_vec;
   }
 
   async getCostsPerMonth(): Promise<number[][]> {
-    var costs = [];
+    var costs_vec = [];
     let current_uid = this.cookieService.get('current_user');
 
     let promise = new Promise((res, rej) => {
       try {
 
         this.getRevenue(current_uid).then((revenue_records) => {
+          var record_dates = [];
+          var costs = [];
           revenue_records.forEach((record) => {
+            record_dates.push(record.date);
             costs.push(record.marketing_costs +
                           record.office_costs +
                           record.operation_costs +
                           record.other_costs +
-                          record.wage_costs);
+                          record.wage_costs)
           
           });
+          costs_vec.push(record_dates, costs)
         });
-        res(costs);
+        res(costs_vec);
 
       } catch(err) {
         rej();
@@ -449,7 +455,7 @@ export class MainService {
     });
 
     await promise;
-    return costs;
+    return costs_vec;
   }
 }
 

@@ -36,16 +36,17 @@ export class GraphAnalyticsComponent implements OnInit, DoCheck {
       this.updated_profit_plot = true;
     }
 
-    // populating rev / cost chart w/ revenue
+    // populating rev / cost chart w/ revenue and labels
     if(this.rev_data.length > 0 && !this.updated_rev_plot){
-      this.revCostPlot.data.datasets[1].data = this.rev_data;
+      this.revCostPlot.data.labels = this.rev_data[0];
+      this.revCostPlot.data.datasets[1].data = this.rev_data[1];
       this.revCostPlot.update();
       this.updated_rev_plot = true;
     }
 
     // populating rev / cost chart w/ costs
     if(this.costs_data.length > 0 && !this.updated_costs_plot){
-      this.revCostPlot.data.datasets[0].data = this.costs_data;
+      this.revCostPlot.data.datasets[0].data = this.costs_data[1];
       this.revCostPlot.update();
       this.updated_costs_plot = true;
     }
