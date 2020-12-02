@@ -28,18 +28,22 @@ export class GraphAnalyticsComponent implements OnInit, DoCheck {
   // Check for plotting data here and update graphs
   ngDoCheck(): void {
     
+    // populating profits chart
     if(this.profit_data.length > 0 && !this.updated_profit_plot){
-      this.profitPlot.data.datasets[0].data = this.profit_data;
+      this.profitPlot.data.labels = this.profit_data[0];
+      this.profitPlot.data.datasets[0].data = this.profit_data[1];
       this.profitPlot.update();
       this.updated_profit_plot = true;
     }
 
+    // populating rev / cost chart w/ revenue
     if(this.rev_data.length > 0 && !this.updated_rev_plot){
       this.revCostPlot.data.datasets[1].data = this.rev_data;
       this.revCostPlot.update();
       this.updated_rev_plot = true;
     }
 
+    // populating rev / cost chart w/ costs
     if(this.costs_data.length > 0 && !this.updated_costs_plot){
       this.revCostPlot.data.datasets[0].data = this.costs_data;
       this.revCostPlot.update();
@@ -64,18 +68,7 @@ export class GraphAnalyticsComponent implements OnInit, DoCheck {
     this.profitPlot = new Chart('profitPlot',{
       type: 'line',
       data: {
-        labels: ['January',
-          'February',
-          'March',
-          'April',
-          'May',
-          'June',
-          'July',
-          'August',
-          'September',
-          'October',
-          'November',
-          'December'],
+        labels: [],
         datasets: [
           {
             label: 'Profit',
