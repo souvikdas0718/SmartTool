@@ -138,7 +138,7 @@ export class MainService {
    * @param user_id ID of the current user of application
    * @returns       All client records for given user
    */
-  async getClients(user_id: string): Promise<Client[]> {
+  async getClients(user_id: string, get_deleted=false): Promise<Client[]> {
     var client_list = [];
     let promise = new Promise((res, rej) => {
       try {
@@ -151,10 +151,10 @@ export class MainService {
               new_client.setData(client.id, client_data.client_name, client_data.start_date,
                                   client_data.end_date, client_data.revenue, client_data.is_active);
             
-              if(new_client.is_active) { client_list.push(new_client); }
+              if(new_client.is_active || get_deleted) { client_list.push(new_client); }
             });
-            // sorting client records by date
-            client_list.sort((a, b) => {return b.start_date - a.start_date});
+            // sorting client records by start date
+            client_list.sort((a, b) => { return new Date(a.start_date).getTime() - new Date(b.start_date).getTime(); });
             res(client_list);
           });
 
@@ -370,21 +370,28 @@ export class MainService {
   }
 
   async getProfitPerMonth(): Promise<number[]> {
-    var profit_vec = [];
+    var profit_payload = [];
     let current_uid = this.cookieService.get('current_user');
     let promise = new Promise((res, rej) => {
       try {
 
         this.getRevenue(current_uid).then((revenue_records) => {
+          
+          var record_dates = [];
+          var profit = [];
           revenue_records.forEach((record) => {
-            profit_vec.push(record.revenue - (record.marketing_costs +
-                                                record.office_costs +
-                                                record.operation_costs +
-                                                record.other_costs +
-                                                record.wage_costs));
+            record_dates.push(new Date(record.date))
+            profit.push(record.revenue - (record.marketing_costs +
+                                            record.office_costs +
+                                            record.operation_costs +
+                                            record.other_costs +
+                                            record.wage_costs))
           });
+          
+          profit_payload = this.add_placeholder_months(record_dates, profit);
+          res(profit_payload);
         });
-        res(profit_vec);
+        
 
       } catch(err) {
         rej();
@@ -392,23 +399,27 @@ export class MainService {
     });
 
     await promise;
-    return profit_vec;
+    return profit_payload;
   }
 
   async getRevenuePerMonth(): Promise<number[][]> {
-    var revenue = [];
+    var revenue_vec = [];
     let current_uid = this.cookieService.get('current_user');
 
     let promise = new Promise((res, rej) => {
       try {
 
         this.getRevenue(current_uid).then((revenue_records) => {
+          var record_dates = [];
+          var revenue = [];
           revenue_records.forEach((record) => {
+            record_dates.push(new Date(record.date))
             revenue.push(record.revenue)
-          
           });
+          revenue_vec = this.add_placeholder_months(record_dates, revenue);
+          res(revenue_vec);
         });
-        res(revenue);
+        
 
       } catch(err) {
         rej();
@@ -416,27 +427,31 @@ export class MainService {
     });
 
     await promise;
-    return revenue;
+    return revenue_vec;
   }
 
   async getCostsPerMonth(): Promise<number[][]> {
-    var costs = [];
+    var costs_vec = [];
     let current_uid = this.cookieService.get('current_user');
 
     let promise = new Promise((res, rej) => {
       try {
 
         this.getRevenue(current_uid).then((revenue_records) => {
+          var record_dates = [];
+          var costs = [];
           revenue_records.forEach((record) => {
+            record_dates.push(new Date(record.date));
             costs.push(record.marketing_costs +
                           record.office_costs +
                           record.operation_costs +
                           record.other_costs +
-                          record.wage_costs);
+                          record.wage_costs)
           
           });
+          costs_vec = this.add_placeholder_months(record_dates, costs)
+          res(costs_vec);
         });
-        res(costs);
 
       } catch(err) {
         rej();
@@ -444,7 +459,184 @@ export class MainService {
     });
 
     await promise;
-    return costs;
+    return costs_vec;
+  }
+
+  async getCostsBreakdown(): Promise<number[]>{
+    var costs_breakdown = []
+    var costs_labels = ['Office Costs', 'Wage Costs', 'Marketing Costs', 'Operations Costs', 'Other Costs']
+    let current_uid = this.cookieService.get('current_user');
+    let promise = new Promise((res, rej) => {
+      try {
+
+        this.getRevenue(current_uid).then((revenue_records) => {
+          var office_costs = [];
+          var wage_costs = [];
+          var marketing_costs = [];
+          var operation_costs = [];
+          var other_costs = []
+          revenue_records.forEach((record) => {
+            office_costs.push(record.office_costs);
+            wage_costs.push(record.wage_costs);
+            marketing_costs.push(record.marketing_costs);
+            operation_costs.push(record.operation_costs);
+            other_costs.push(record.other_costs)
+          });
+
+          // pushing sum of each cost array
+          costs_breakdown.push(costs_labels, [office_costs.reduce((a, b) => a + b, 0),
+                                              wage_costs.reduce((a, b) => a + b, 0),
+                                              marketing_costs.reduce((a, b) => a + b, 0),
+                                              operation_costs.reduce((a, b) => a + b, 0),
+                                              other_costs.reduce((a, b) => a + b, 0)]);
+        });
+        res(costs_breakdown);
+
+      } catch(err) {
+        rej();
+      }
+    });
+    
+    await promise;
+    return costs_breakdown;
+  }
+
+  async getClientsPerMonth(): Promise<number[]>{
+    var clients_vec = [];
+    let current_uid = this.cookieService.get('current_user');
+
+    let promise = new Promise((res, rej) => {
+      try {
+        this.getClients(current_uid, true).then((client_records) => {
+          var client_date_vec = [];
+          var client_count_vec = [];
+          var start_dates = [];          
+          var end_dates = [];
+
+          client_records.forEach((record) => {
+            start_dates.push(new Date(record.start_date));
+            end_dates.push(new Date(record.end_date));
+          });
+
+          // sorting end dates as client records are sorted by start date
+          end_dates.sort((a, b) => { return a.getTime() - b.getTime(); });
+
+          var current_clients = 0;
+          var curr_start: Date;
+          while(start_dates.length > 0 || end_dates.length > 0) {
+          
+            // make sure start dates has records else use up all end dates
+            if(start_dates.length > 0) {
+              curr_start = start_dates.shift()
+              current_clients += 1;
+
+              // Count up all start dates in month and year of curr_start
+              while(start_dates[0] && curr_start.getUTCMonth() == start_dates[0].getUTCMonth() && curr_start.getUTCFullYear() == start_dates[0].getUTCFullYear()) {
+                start_dates.shift()
+                current_clients += 1;
+              }
+              
+              // create client record with month
+              client_date_vec.push(curr_start.getUTCFullYear() + "-" + (curr_start.getUTCMonth() + 1))
+              client_count_vec.push(current_clients);
+
+              // search for end dates in month and year and subtract 
+              while(curr_start.getUTCMonth() == end_dates[0].getUTCMonth() && curr_start.getUTCFullYear() == end_dates[0].getUTCFullYear()) {
+                end_dates.shift()
+                current_clients -= 1;
+              }
+
+            } else {
+              // Checking for remaining end dates with month and/or years less than current date
+              var current_date = new Date();
+              if((end_dates[0].getUTCMonth() < current_date.getUTCMonth() && end_dates[0].getUTCFullYear() == current_date.getUTCFullYear()) || end_dates[0].getUTCFullYear() < current_date.getUTCFullYear()) {
+                var end_date = end_dates.shift();
+                current_clients -= 1;
+
+                // Getting all other end dates of same month & year
+                while(end_dates[0] && end_date.getUTCMonth() == end_dates[0].getUTCMonth() && end_date.getUTCFullYear() == end_dates[0].getUTCFullYear()) {
+                  var end_date = end_dates.shift();
+                  current_clients -= 1;
+                }
+
+                // create client record with month
+                client_date_vec.push(end_date.getUTCFullYear()+ "-" + (end_date.getUTCMonth() + 2))
+                client_count_vec.push(current_clients);
+
+              } else {
+                break;
+              }
+            }
+          }
+
+          clients_vec.push(client_date_vec, client_count_vec);
+          res(client_records);
+        });
+      } catch(err) {
+        rej();
+      }
+    });
+
+    await promise;
+    return clients_vec;
+  }
+
+  /**
+   * 
+   * @param record_dates 
+   * @param metric 
+   */
+  add_placeholder_months(record_dates: Date[], metric: number[]): number[]{
+
+    var payload = [];
+    var metric_vec = [];
+    var date_vec = [];
+
+    var curr_month = -1;
+    var curr_year = -1;
+    var curr_metric = 0;
+    while(record_dates.length > 0) {
+      if(curr_month == -1) {
+        var curr_date = record_dates.shift();
+        curr_month = curr_date.getUTCMonth();
+        curr_year = curr_date.getUTCFullYear();
+        curr_metric = metric.shift();
+
+        if(record_dates.length == 0){
+          date_vec.push(curr_year + "-" + (curr_month + 1));
+          metric_vec.push(curr_metric);
+        }
+
+      }else if(curr_month == record_dates[0].getUTCMonth() && curr_year == record_dates[0].getUTCFullYear()) {
+        record_dates.shift();
+        curr_metric += metric.shift();
+
+      } else {
+        // Adding current month summation to vector
+        date_vec.push(curr_year + "-" + (curr_month + 1));
+        metric_vec.push(curr_metric);
+
+        // Checking if not the next month
+        var diff_month = (record_dates[0].getUTCMonth() + 12 * record_dates[0].getUTCFullYear()) - (curr_month + 12 * curr_year);
+        if(diff_month > 1) {
+          for(var i = 0; i < diff_month - 1; i++) {
+            curr_month += 1;
+            if(curr_month == 12) {
+              curr_month = 0;
+              curr_year += 1;
+            }
+
+            date_vec.push(curr_year + "-" + (curr_month + 1));
+            metric_vec.push(curr_metric);
+          }
+        }
+        curr_month = -1;
+        curr_year = -1;
+        curr_metric = 0;
+      }
+    }
+    payload.push(date_vec, metric_vec)
+    return payload;
   }
 }
 
