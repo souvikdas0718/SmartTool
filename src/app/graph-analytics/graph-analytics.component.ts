@@ -63,8 +63,15 @@ export class GraphAnalyticsComponent implements OnInit, DoCheck {
     if(this.costs_breakdown_data.length > 0 && !this.updated_breakdown_plot) {
       this.costsBreakdownPlot.data.labels = this.costs_breakdown_data[0];
       this.costsBreakdownPlot.data.datasets[0].data  = this.costs_breakdown_data[1];
-      this.costsBreakdownPlot.update()
+      this.costsBreakdownPlot.update();
       this.updated_breakdown_plot = true;
+    }
+
+    if(this.clients_data.length > 0 && !this.updated_clients_plot) {
+      this.clientsPlot.data.labels = this.clients_data[0];
+      this.clientsPlot.data.datasets[0].data = this.clients_data[1];
+      this.clientsPlot.update();
+      this.updated_clients_plot = true;
     }
   }
 
@@ -75,6 +82,7 @@ export class GraphAnalyticsComponent implements OnInit, DoCheck {
     this.mainService.getRevenuePerMonth().then((rev_records) => { this.rev_data = rev_records; });
     this.mainService.getCostsPerMonth().then((cost_records) => { this.costs_data = cost_records; });
     this.mainService.getCostsBreakdown().then((costs_breakdown) => {this.costs_breakdown_data = costs_breakdown; });
+    this.mainService.getClientsPerMonth().then((clients) => {this.clients_data = clients; });
 
     this.profitPlot = new Chart('profitPlot',{
       type: 'line',
@@ -199,13 +207,49 @@ export class GraphAnalyticsComponent implements OnInit, DoCheck {
     this.clientsPlot = new Chart('clients', {
       type: 'line',
       data: {
-        labels: ['test', 'test', 'test'],
+        labels: [],
         datasets: [{
           label: 'Clients',
-            data: [1,2,3],
-            backgroundColor: '#ed382b',
+            data: [],
+            backgroundColor: '#fee3b8',
             fill: true,
         }]
+      },
+      options:
+      {
+        title:
+        {
+          display: true,
+          text: ''
+        },
+        legend:
+        {
+          display: false,
+          position: 'right'
+        },
+        animation: {
+          animateScale: true,
+          animateRotate: true
+        },
+
+        scales: {
+          xAxes: [
+            {
+
+              ticks: {
+                display: true,
+                beginAtZero: true//this will remove only the label
+              },
+              gridLines: {
+                display: false
+              }
+            }],
+          yAxes: [{
+            gridLines: {
+              display: true
+            }
+          }]
+        }
       }
     });
 

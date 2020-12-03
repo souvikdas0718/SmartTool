@@ -138,7 +138,7 @@ export class MainService {
    * @param user_id ID of the current user of application
    * @returns       All client records for given user
    */
-  async getClients(user_id: string): Promise<Client[]> {
+  async getClients(user_id: string, get_deleted=false): Promise<Client[]> {
     var client_list = [];
     let promise = new Promise((res, rej) => {
       try {
@@ -151,10 +151,10 @@ export class MainService {
               new_client.setData(client.id, client_data.client_name, client_data.start_date,
                                   client_data.end_date, client_data.revenue, client_data.is_active);
             
-              if(new_client.is_active) { client_list.push(new_client); }
+              if(new_client.is_active || get_deleted) { client_list.push(new_client); }
             });
-            // sorting client records by date
-            client_list.sort((a, b) => {return b.start_date - a.start_date});
+            // sorting client records by start date
+            client_list.sort((a, b) => { return new Date(a.start_date).getTime() - new Date(b.start_date).getTime(); });
             res(client_list);
           });
 
@@ -462,7 +462,6 @@ export class MainService {
     var costs_breakdown = []
     var costs_labels = ['Office Costs', 'Wage Costs', 'Marketing Costs', 'Operations Costs', 'Other Costs']
     let current_uid = this.cookieService.get('current_user');
-    console.log("TEST")
     let promise = new Promise((res, rej) => {
       try {
 
@@ -496,6 +495,87 @@ export class MainService {
     
     await promise;
     return costs_breakdown;
+  }
+
+  async getClientsPerMonth(): Promise<number[]>{
+    var clients_vec = [];
+    let current_uid = this.cookieService.get('current_user');
+
+    let promise = new Promise((res, rej) => {
+      try {
+        this.getClients(current_uid, true).then((client_records) => {
+          var client_date_vec = [];
+          var client_count_vec = [];
+          var start_dates = [];          
+          var end_dates = [];
+
+          client_records.forEach((record) => {
+            //console.log(record.start_date)
+            start_dates.push(new Date(record.start_date));
+            end_dates.push(new Date(record.end_date));
+          });
+
+          // sorting end dates as client records are sorted by start date
+          end_dates.sort((a, b) => { return a.getTime() - b.getTime(); });
+
+          var current_clients = 0;
+          var curr_start: Date;
+          while(start_dates.length > 0 || end_dates.length > 0) {
+          
+            // make sure start dates has records else use up all end dates
+            if(start_dates.length > 0) {
+              curr_start = start_dates.shift()
+              current_clients += 1;
+
+              // Count up all start dates in month and year of curr_start
+              while(start_dates[0] && curr_start.getUTCMonth() == start_dates[0].getUTCMonth() && curr_start.getUTCFullYear() == start_dates[0].getUTCFullYear()) {
+                start_dates.shift()
+                current_clients += 1;
+              }
+              
+              // create client record with month
+              client_date_vec.push(curr_start.getUTCFullYear() + "-" + (curr_start.getUTCMonth() + 1))
+              client_count_vec.push(current_clients);
+
+              // search for end dates in month and year and subtract 
+              while(curr_start.getUTCMonth() == end_dates[0].getUTCMonth() && curr_start.getUTCFullYear() == end_dates[0].getUTCFullYear()) {
+                end_dates.shift()
+                current_clients -= 1;
+              }
+
+            } else {
+              // Checking for remaining end dates with month and/or years less than current date
+              var current_date = new Date();
+              if((end_dates[0].getUTCMonth() < current_date.getUTCMonth() && end_dates[0].getUTCFullYear() == current_date.getUTCFullYear()) || end_dates[0].getUTCFullYear() < current_date.getUTCFullYear()) {
+                var end_date = end_dates.shift();
+                current_clients -= 1;
+
+                // Getting all other end dates of same month & year
+                while(end_dates[0] && end_date.getUTCMonth() == end_dates[0].getUTCMonth() && end_date.getUTCFullYear() == end_dates[0].getUTCFullYear()) {
+                  var end_date = end_dates.shift();
+                  current_clients -= 1;
+                }
+
+                // create client record with month
+                client_date_vec.push(end_date.getUTCFullYear()+ "-" + (end_date.getUTCMonth() + 2))
+                client_count_vec.push(current_clients);
+
+              } else {
+                break;
+              }
+            }
+          }
+
+          clients_vec.push(client_date_vec, client_count_vec);
+          res(client_records);
+        });
+      } catch(err) {
+        rej();
+      }
+    });
+
+    await promise;
+    return clients_vec;
   }
 }
 
