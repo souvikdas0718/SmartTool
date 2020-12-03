@@ -370,25 +370,28 @@ export class MainService {
   }
 
   async getProfitPerMonth(): Promise<number[]> {
-    var profit_vec = [];
+    var profit_payload = [];
     let current_uid = this.cookieService.get('current_user');
     let promise = new Promise((res, rej) => {
       try {
 
         this.getRevenue(current_uid).then((revenue_records) => {
+          
           var record_dates = [];
           var profit = [];
           revenue_records.forEach((record) => {
-            record_dates.push(record.date)
+            record_dates.push(new Date(record.date))
             profit.push(record.revenue - (record.marketing_costs +
                                             record.office_costs +
                                             record.operation_costs +
                                             record.other_costs +
                                             record.wage_costs))
           });
-          profit_vec.push(record_dates, profit);
+          
+          profit_payload = this.add_placeholder_months(record_dates, profit);
+          res(profit_payload);
         });
-        res(profit_vec);
+        
 
       } catch(err) {
         rej();
@@ -396,7 +399,7 @@ export class MainService {
     });
 
     await promise;
-    return profit_vec;
+    return profit_payload;
   }
 
   async getRevenuePerMonth(): Promise<number[][]> {
@@ -410,12 +413,13 @@ export class MainService {
           var record_dates = [];
           var revenue = [];
           revenue_records.forEach((record) => {
-            record_dates.push(record.date)
+            record_dates.push(new Date(record.date))
             revenue.push(record.revenue)
           });
-          revenue_vec.push(record_dates, revenue)
+          revenue_vec = this.add_placeholder_months(record_dates, revenue);
+          res(revenue_vec);
         });
-        res(revenue_vec);
+        
 
       } catch(err) {
         rej();
@@ -437,7 +441,7 @@ export class MainService {
           var record_dates = [];
           var costs = [];
           revenue_records.forEach((record) => {
-            record_dates.push(record.date);
+            record_dates.push(new Date(record.date));
             costs.push(record.marketing_costs +
                           record.office_costs +
                           record.operation_costs +
@@ -445,9 +449,9 @@ export class MainService {
                           record.wage_costs)
           
           });
-          costs_vec.push(record_dates, costs)
+          costs_vec = this.add_placeholder_months(record_dates, costs)
+          res(costs_vec);
         });
-        res(costs_vec);
 
       } catch(err) {
         rej();
@@ -510,7 +514,6 @@ export class MainService {
           var end_dates = [];
 
           client_records.forEach((record) => {
-            //console.log(record.start_date)
             start_dates.push(new Date(record.start_date));
             end_dates.push(new Date(record.end_date));
           });
@@ -576,6 +579,64 @@ export class MainService {
 
     await promise;
     return clients_vec;
+  }
+
+  /**
+   * 
+   * @param record_dates 
+   * @param metric 
+   */
+  add_placeholder_months(record_dates: Date[], metric: number[]): number[]{
+
+    var payload = [];
+    var metric_vec = [];
+    var date_vec = [];
+
+    var curr_month = -1;
+    var curr_year = -1;
+    var curr_metric = 0;
+    while(record_dates.length > 0) {
+      if(curr_month == -1) {
+        var curr_date = record_dates.shift();
+        curr_month = curr_date.getUTCMonth();
+        curr_year = curr_date.getUTCFullYear();
+        curr_metric = metric.shift();
+
+        if(record_dates.length == 0){
+          date_vec.push(curr_year + "-" + (curr_month + 1));
+          metric_vec.push(curr_metric);
+        }
+
+      }else if(curr_month == record_dates[0].getUTCMonth() && curr_year == record_dates[0].getUTCFullYear()) {
+        record_dates.shift();
+        curr_metric += metric.shift();
+
+      } else {
+        // Adding current month summation to vector
+        date_vec.push(curr_year + "-" + (curr_month + 1));
+        metric_vec.push(curr_metric);
+
+        // Checking if not the next month
+        var diff_month = (record_dates[0].getUTCMonth() + 12 * record_dates[0].getUTCFullYear()) - (curr_month + 12 * curr_year);
+        if(diff_month > 1) {
+          for(var i = 0; i < diff_month - 1; i++) {
+            curr_month += 1;
+            if(curr_month == 12) {
+              curr_month = 0;
+              curr_year += 1;
+            }
+
+            date_vec.push(curr_year + "-" + (curr_month + 1));
+            metric_vec.push(curr_metric);
+          }
+        }
+        curr_month = -1;
+        curr_year = -1;
+        curr_metric = 0;
+      }
+    }
+    payload.push(date_vec, metric_vec)
+    return payload;
   }
 }
 
