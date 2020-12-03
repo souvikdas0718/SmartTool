@@ -4,7 +4,7 @@ const path = require('path');
 const app = express();
 
 // Serve only the static files form the angularapp directory
-app.use(express.static(__dirname + '/team8_technology_innovationss'));
+app.use(express.static(__dirname + '/team8_technology_innovation'));
 
 app.get('/*', function (req, res) {
 
