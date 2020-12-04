@@ -1,5 +1,6 @@
 ![Logo](/assets/smarttool_logo_small.png)
 # Team8 - SmartTool
+A cloud-based business performance analysis tool to help businesses grow rapidly.
 
 ## To Run Application Locally
 
