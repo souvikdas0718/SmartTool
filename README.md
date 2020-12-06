@@ -4,7 +4,9 @@ A cloud-based business performance analysis tool to help businesses grow rapidly
 
 ## To Run Application Locally
 
+Install node
 ```
+npm install -g @angular/cli
 npm install --save @angular-devkit/build-angular
 ```
 
